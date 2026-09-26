@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
 import { ArrowDown, Github, Mail, Shield, SkipForward, Volume2, VolumeX } from "lucide-react";
 
 import rempartImage from "@/assets/rempart-airain.webp";
@@ -150,7 +150,7 @@ export function PhaseOne() {
           </div>
 
           <div ref={debrisRef} className="pointer-events-none absolute left-1/2 top-[43%] z-30 h-28 w-52 -translate-x-1/2 opacity-0">
-            {[...Array(14)].map((_, index) => <i key={index} className="debris" style={{ "--i": index } as React.CSSProperties} />)}
+            {[...Array(14)].map((_, index) => <i key={index} className="debris" style={{ "--i": index } as CSSProperties} />)}
           </div>
           <div ref={crackRef} className="crack absolute left-1/2 top-[31%] z-30 h-[62%] w-28 -translate-x-1/2 origin-top scale-y-0 opacity-0" aria-hidden="true" />
           <div className="absolute bottom-5 left-5 z-20 hidden text-[0.65rem] uppercase text-parchment/50 sm:block">Calavi · Bénin</div>
