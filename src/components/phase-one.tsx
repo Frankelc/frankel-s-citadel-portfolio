@@ -180,8 +180,19 @@ export function PhaseOne() {
             <h2 id="welcome-title" className="font-display text-5xl leading-none text-parchment sm:text-7xl">Bienvenue derrière les remparts.</h2>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-parchment/75">Étudiant en systèmes embarqués et IoT, je relie les logiciels aux machines. Ici commence le registre de mes constructions, de mes missions et de mes expérimentations.</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Button asChild className="bg-blood text-parchment hover:bg-blood/80"><a href="https://github.com/Frankelc" target="_blank" rel="noreferrer"><Github /> GitHub</a></Button>
-              <Button asChild variant="outline" className="border-parchment/25 bg-transparent text-parchment hover:bg-parchment/10 hover:text-parchment"><a href="mailto:frankelgnonlonfin@gmail.com"><Mail /> M’écrire</a></Button>
+              <Button
+                className="bg-blood text-parchment hover:bg-blood/80"
+                onClick={() => window.open("https://github.com/Frankelc", "_blank", "noopener,noreferrer")}
+              >
+                <Github /> GitHub
+              </Button>
+              <Button
+                variant="outline"
+                className="border-parchment/25 bg-transparent text-parchment hover:bg-parchment/10 hover:text-parchment"
+                onClick={() => window.location.assign("mailto:frankelgnonlonfin@gmail.com")}
+              >
+                <Mail /> M’écrire
+              </Button>
             </div>
             <div className="mt-14 border-l-2 border-blood pl-5 text-sm text-muted-foreground"><span className="font-display text-lg text-parchment">Le registre continue bientôt.</span><br />Dites « phase suivante » pour ouvrir la fiche de recrue.</div>
           </div>
