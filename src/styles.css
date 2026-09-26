@@ -144,6 +144,10 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -183,6 +187,10 @@
   font-family: var(--font-display);
   letter-spacing: 0;
   text-shadow: 0 2px 0 var(--background), 0 5px 14px color-mix(in oklab, var(--background) 90%, transparent);
+}
+
+.intro-reveal {
+  animation: scene-reveal 1.6s ease-out both;
 }
 
 .mist {
@@ -229,6 +237,11 @@
 @keyframes mist-drift {
   from { transform: translate3d(-5%, 0, 0) scale(1); opacity: 0.38; }
   to { transform: translate3d(7%, -4%, 0) scale(1.08); opacity: 0.7; }
+}
+
+@keyframes scene-reveal {
+  from { opacity: 0; filter: brightness(0); }
+  to { opacity: 1; filter: brightness(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {

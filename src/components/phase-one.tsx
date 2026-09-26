@@ -140,8 +140,8 @@ export function PhaseOne() {
       </div>
 
       <section ref={storyRef} className="relative h-[280vh]" aria-label="Le Rempart d’Airain">
-        <div ref={sceneRef} className="sticky top-0 h-screen overflow-hidden bg-background">
-          <img ref={imageRef} src={rempartImage} alt="Le Rempart d’Airain face à un colosse minéral dans la brume" width={1920} height={1080} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-[62%_center]" />
+        <div ref={sceneRef} className="intro-reveal sticky top-0 h-screen overflow-hidden bg-background">
+          <img ref={imageRef} src={rempartImage} alt="Le Rempart d’Airain face à un colosse minéral dans la brume" width={1920} height={1080} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-[44%_center] sm:object-[62%_center]" />
           <div className="absolute inset-0 bg-scene-shade" />
           <div ref={colossusRef} className="absolute left-[11%] top-[7%] h-[44%] w-[26%] rounded-full bg-colossus-haze opacity-30 blur-2xl" />
           <div className="mist mist-one" /><div className="mist mist-two" />
