@@ -94,8 +94,14 @@ export function PhaseOne() {
 
     import("@tsparticles/react").then(async (module) => {
       const { loadSlim } = await import("@tsparticles/slim");
-      await module.initParticlesEngine(async (engine) => loadSlim(engine));
-      if (!cancelled) setParticlesLayer(() => module.default as ParticleLayer);
+      const Particles = module.default;
+      const Provider = module.ParticlesProvider;
+      const Layer = (props: Record<string, unknown>) => (
+        <Provider init={loadSlim}>
+          <Particles {...props} />
+        </Provider>
+      );
+      if (!cancelled) setParticlesLayer(() => Layer as ParticleLayer);
     });
 
     return () => {
