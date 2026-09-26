@@ -19,6 +19,8 @@
  */
 
 @theme inline {
+  --font-sans: "Alegreya Sans", sans-serif;
+  --font-display: "IM Fell English", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -59,29 +61,38 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-parchment: var(--parchment);
+  --color-blood: var(--blood);
+  --color-blood-light: var(--blood-light);
+  --color-stone: var(--stone);
+  --shadow-seal: 0 10px 30px color-mix(in oklab, var(--blood) 45%, transparent);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --radius: 0.25rem;
+  --background: oklch(0.205 0.014 65);
+  --foreground: oklch(0.885 0.035 83);
+  --card: oklch(0.26 0.024 67);
+  --card-foreground: oklch(0.885 0.035 83);
+  --popover: oklch(0.24 0.02 67);
+  --popover-foreground: oklch(0.885 0.035 83);
+  --primary: oklch(0.43 0.13 27);
+  --primary-foreground: oklch(0.92 0.033 84);
+  --secondary: oklch(0.405 0.048 114);
+  --secondary-foreground: oklch(0.92 0.033 84);
+  --muted: oklch(0.3 0.018 70);
+  --muted-foreground: oklch(0.69 0.03 78);
+  --accent: oklch(0.41 0.065 67);
+  --accent-foreground: oklch(0.92 0.033 84);
+  --destructive: oklch(0.43 0.13 27);
+  --destructive-foreground: oklch(0.92 0.033 84);
+  --border: oklch(0.54 0.025 70 / 35%);
+  --input: oklch(0.54 0.025 70 / 45%);
+  --ring: oklch(0.65 0.12 32);
+  --parchment: oklch(0.885 0.035 83);
+  --blood: oklch(0.43 0.13 27);
+  --blood-light: oklch(0.61 0.16 31);
+  --stone: oklch(0.49 0.021 74);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -133,6 +144,10 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -140,5 +155,99 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--blood);
+    color: var(--parchment);
+  }
+}
+
+@utility bg-scene-shade {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--background) 24%, transparent) 0%, color-mix(in oklab, var(--background) 7%, transparent) 42%, color-mix(in oklab, var(--background) 94%, transparent) 100%);
+}
+
+@utility bg-colossus-haze {
+  background: color-mix(in oklab, var(--blood) 30%, transparent);
+}
+
+@utility bg-welcome {
+  background: radial-gradient(circle at 82% 18%, color-mix(in oklab, var(--blood) 10%, transparent), transparent 28%), repeating-linear-gradient(94deg, color-mix(in oklab, var(--stone) 4%, transparent) 0 1px, transparent 1px 8px), var(--background);
+}
+
+@utility bg-rift {
+  background: linear-gradient(90deg, transparent, var(--blood-light), var(--parchment), var(--blood-light), transparent);
+  box-shadow: 0 0 26px color-mix(in oklab, var(--blood-light) 70%, transparent);
+}
+
+.stone-title {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+  text-shadow: 0 2px 0 var(--background), 0 5px 14px color-mix(in oklab, var(--background) 90%, transparent);
+}
+
+.intro-reveal {
+  animation: scene-reveal 1.6s ease-out both;
+}
+
+.mist {
+  position: absolute;
+  inset-inline: -20%;
+  height: 28%;
+  pointer-events: none;
+  filter: blur(28px);
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--parchment) 12%, transparent), color-mix(in oklab, var(--stone) 20%, transparent), transparent);
+  animation: mist-drift 16s ease-in-out infinite alternate;
+}
+
+.mist-one { bottom: 16%; }
+.mist-two { top: 18%; opacity: 0.42; animation-duration: 23s; animation-direction: alternate-reverse; }
+
+.crack {
+  clip-path: polygon(47% 0, 58% 12%, 46% 21%, 64% 36%, 52% 48%, 70% 61%, 53% 74%, 60% 100%, 46% 78%, 54% 65%, 38% 50%, 48% 37%, 33% 23%);
+  background: linear-gradient(90deg, transparent 34%, var(--blood-light) 48%, var(--parchment) 51%, var(--blood-light) 55%, transparent 68%);
+  filter: drop-shadow(0 0 12px var(--blood-light));
+}
+
+.debris {
+  --angle: calc(var(--i) * 27deg);
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  width: calc(5px + mod(var(--i), 4) * 3px);
+  height: calc(8px + mod(var(--i), 3) * 5px);
+  background: var(--stone);
+  transform: rotate(var(--angle)) translateX(calc(24px + var(--i) * 7px));
+  box-shadow: 0 0 8px color-mix(in oklab, var(--background) 80%, transparent);
+}
+
+.recruit-frame::before,
+.recruit-frame::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border-top: 2px solid color-mix(in oklab, var(--parchment) 22%, transparent);
+  border-bottom: 2px solid color-mix(in oklab, var(--parchment) 22%, transparent);
+}
+
+@keyframes mist-drift {
+  from { transform: translate3d(-5%, 0, 0) scale(1); opacity: 0.38; }
+  to { transform: translate3d(7%, -4%, 0) scale(1.08); opacity: 0.7; }
+}
+
+@keyframes scene-reveal {
+  from { opacity: 0; filter: brightness(0); }
+  to { opacity: 1; filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
