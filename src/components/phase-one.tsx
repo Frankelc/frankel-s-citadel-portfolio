@@ -37,8 +37,15 @@ export function PhaseOne() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const colossusRef = useRef<HTMLDivElement>(null);
+  const wallRef = useRef<HTMLDivElement>(null);
+  const leftWallRef = useRef<HTMLDivElement>(null);
+  const rightWallRef = useRef<HTMLDivElement>(null);
   const crackRef = useRef<HTMLDivElement>(null);
   const debrisRef = useRef<HTMLDivElement>(null);
+  const shockwaveRef = useRef<HTMLDivElement>(null);
+  const impactRef = useRef<HTMLDivElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const breachRef = useRef<HTMLDivElement>(null);
   const welcomeRef = useRef<HTMLElement>(null);
   const soundRef = useRef<SoundHandle | null>(null);
   const [soundOn, setSoundOn] = useState(false);
@@ -66,6 +73,9 @@ export function PhaseOne() {
         if (reduced) {
           gsap.set(crackRef.current, { opacity: 0.8, scaleY: 1 });
           gsap.set(debrisRef.current, { opacity: 0.45 });
+          gsap.set(leftWallRef.current, { xPercent: -42, rotationY: 20 });
+          gsap.set(rightWallRef.current, { xPercent: 42, rotationY: -20 });
+          gsap.set(breachRef.current, { opacity: 1, scale: 1 });
         } else {
           const timeline = gsap.timeline({
             scrollTrigger: {
@@ -76,13 +86,26 @@ export function PhaseOne() {
             },
           });
           timeline
-            .to(imageRef.current, { scale: 1.08, yPercent: 4, duration: 3 }, 0)
-            .to(colossusRef.current, { xPercent: 4, yPercent: 5, opacity: 0.9, duration: 2 }, 0.5)
-            .to(sceneRef.current, { x: -8, duration: 0.06, repeat: 7, yoyo: true }, 2.7)
-            .to(debrisRef.current, { opacity: 1, y: 90, rotation: 9, duration: 0.7 }, 2.72)
-            .to(crackRef.current, { opacity: 1, scaleY: 1, duration: 0.6 }, 2.8)
-            .to(crackRef.current, { filter: "brightness(2)", duration: 0.7 }, 3.25)
-            .to(sceneRef.current, { opacity: 0.18, scale: 1.04, duration: 1.1 }, 4.05);
+            .to(imageRef.current, { scale: 1.13, yPercent: 5, duration: 3.8, ease: "none" }, 0)
+            .to(colossusRef.current, { scale: 1.18, xPercent: 6, yPercent: 8, opacity: 1, duration: 2.1, ease: "power1.in" }, 0.25)
+            .to(copyRef.current, { y: -24, opacity: 0, duration: 0.45 }, 1.75)
+            .to(impactRef.current, { opacity: 1, scale: 1.35, duration: 0.08, ease: "power4.out" }, 2.18)
+            .to(wallRef.current, { x: -14, y: 5, duration: 0.035, repeat: 9, yoyo: true }, 2.18)
+            .to(imageRef.current, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, 2.18)
+            .to(shockwaveRef.current, { opacity: 0.85, scale: 5.5, duration: 0.42, ease: "power3.out" }, 2.2)
+            .to(impactRef.current, { opacity: 0, scale: 2.1, duration: 0.28 }, 2.26)
+            .to(debrisRef.current, { opacity: 1, duration: 0.06 }, 2.2)
+            .to(debrisRef.current?.children ?? [], { opacity: 1, x: "random(-440, 440)", y: "random(-250, 390)", rotation: "random(-240, 240)", scale: "random(0.65, 1.8)", stagger: 0.012, duration: 0.78, ease: "power3.out" }, 2.22)
+            .to(crackRef.current, { opacity: 1, scaleY: 1, duration: 0.38, ease: "power4.out" }, 2.25)
+            .to(crackRef.current, { filter: "brightness(2.6)", duration: 0.35 }, 2.52)
+            .to(breachRef.current, { opacity: 1, scale: 1, duration: 0.55 }, 2.58)
+            .to(leftWallRef.current, { xPercent: -92, z: 250, rotationY: 28, rotationZ: -2, duration: 1.35, ease: "power2.inOut" }, 2.72)
+            .to(rightWallRef.current, { xPercent: 92, z: 250, rotationY: -28, rotationZ: 2, duration: 1.35, ease: "power2.inOut" }, 2.72)
+            .to(wallRef.current, { scale: 1.22, duration: 1.4, ease: "power2.in" }, 2.72)
+            .to(colossusRef.current, { scale: 1.42, opacity: 0.34, duration: 1.25 }, 2.82)
+            .to(breachRef.current, { scale: 1.7, filter: "brightness(1.35)", duration: 1.25, ease: "power2.in" }, 2.92)
+            .to([leftWallRef.current, rightWallRef.current], { opacity: 0.12, duration: 0.7 }, 4.0)
+            .to(breachRef.current, { opacity: 0.28, duration: 0.7 }, 4.0);
         }
         cleanup = () => {
           cancelAnimationFrame(frame);
@@ -139,15 +162,25 @@ export function PhaseOne() {
         </Button>
       </div>
 
-      <section ref={storyRef} className="relative h-[280vh]" aria-label="Le Rempart d’Airain">
-        <div ref={sceneRef} className="intro-reveal sticky top-0 h-screen overflow-hidden bg-background">
+      <section ref={storyRef} className="relative h-[390vh]" aria-label="Le Rempart d’Airain">
+        <div ref={sceneRef} className="intro-reveal sticky top-0 h-screen overflow-hidden bg-background [perspective:1200px]">
           <img ref={imageRef} src={rempartImage} alt="Le Rempart d’Airain face à un colosse minéral dans la brume" width={1920} height={1080} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-[44%_center] sm:object-[62%_center]" />
           <div className="absolute inset-0 bg-scene-shade" />
-          <div ref={colossusRef} className="absolute left-[11%] top-[7%] h-[44%] w-[26%] rounded-full bg-colossus-haze opacity-30 blur-2xl" />
+          <div ref={colossusRef} className="colossus-depth absolute left-[-5%] top-0 h-[60%] w-[48%] opacity-55 sm:left-[1%] sm:w-[38%]">
+            <div className="colossus-silhouette absolute inset-0" />
+            <i className="colossus-rift rift-one" /><i className="colossus-rift rift-two" /><i className="colossus-rift rift-three" />
+          </div>
           <div className="mist mist-one" /><div className="mist mist-two" />
           {ParticlesLayer ? <div className="pointer-events-none absolute inset-0 z-10"><ParticlesLayer id="embers" options={particleOptions} className="h-full w-full" /></div> : null}
 
-          <div className="absolute inset-x-0 bottom-[12%] z-20 mx-auto flex max-w-5xl flex-col items-center px-5 text-center sm:bottom-[10%]">
+          <div ref={breachRef} className="breach-interior pointer-events-none absolute inset-0 z-[11] scale-75 opacity-0" aria-hidden="true"><div className="breach-vault" /></div>
+
+          <div ref={wallRef} className="wall-stage pointer-events-none absolute inset-0 z-[15] [transform-style:preserve-3d]" aria-hidden="true">
+            <div ref={leftWallRef} className="wall-panel wall-panel-left"><img src={rempartImage} alt="" className="wall-image wall-image-left" /></div>
+            <div ref={rightWallRef} className="wall-panel wall-panel-right"><img src={rempartImage} alt="" className="wall-image wall-image-right" /></div>
+          </div>
+
+          <div ref={copyRef} className="absolute inset-x-0 bottom-[12%] z-20 mx-auto flex max-w-5xl flex-col items-center px-5 text-center sm:bottom-[10%]">
             <div className="mb-4 flex items-center gap-3 text-parchment/70"><span className="h-px w-10 bg-current" /><Emblem className="h-14 w-12" /><span className="h-px w-10 bg-current" /></div>
             <p className="mb-2 text-xs font-semibold uppercase text-parchment/70 sm:text-sm">Rempart d’Airain · Dossier 01</p>
             <h1 className="stone-title text-[clamp(2.7rem,8vw,7.4rem)] leading-[0.83] text-parchment">Frankel<br /><span className="text-blood-light">Gnonlonfin</span></h1>
@@ -155,8 +188,10 @@ export function PhaseOne() {
             <div className="mt-8 flex items-center gap-2 text-xs uppercase text-parchment/60"><ArrowDown className="animate-bounce" /> Défilez pour franchir le rempart</div>
           </div>
 
-          <div ref={debrisRef} className="pointer-events-none absolute left-1/2 top-[43%] z-30 h-28 w-52 -translate-x-1/2 opacity-0">
-            {[...Array(14)].map((_, index) => <i key={index} className="debris" style={{ "--i": index } as CSSProperties} />)}
+          <div ref={impactRef} className="impact-flash pointer-events-none absolute left-1/2 top-[48%] z-30 h-24 w-24 -translate-x-1/2 -translate-y-1/2 scale-50 opacity-0" aria-hidden="true" />
+          <div ref={shockwaveRef} className="shockwave pointer-events-none absolute left-1/2 top-[48%] z-30 h-36 w-36 -translate-x-1/2 -translate-y-1/2 scale-50 opacity-0" aria-hidden="true" />
+          <div ref={debrisRef} className="pointer-events-none absolute left-1/2 top-[48%] z-30 h-2 w-2 opacity-0">
+            {[...Array(30)].map((_, index) => <i key={index} className="debris" style={{ "--i": index } as CSSProperties} />)}
           </div>
           <div ref={crackRef} className="crack absolute left-1/2 top-[31%] z-30 h-[62%] w-28 -translate-x-1/2 origin-top scale-y-0 opacity-0" aria-hidden="true" />
           <div className="absolute bottom-5 left-5 z-20 hidden text-[0.65rem] uppercase text-parchment/50 sm:block">Calavi · Bénin</div>
