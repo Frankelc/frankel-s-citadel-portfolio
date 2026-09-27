@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Check, ChevronLeft, ChevronRight, Link2, X } from "lucide-react";
 
@@ -12,6 +12,7 @@ import {
   projectRefs,
   SHOW_TODO,
 } from "@/data/projects";
+import { playInterfaceSound } from "@/lib/board-audio";
 import { useCircuit } from "@/lib/circuit";
 
 /**
@@ -22,6 +23,11 @@ export function ModuleDatasheet() {
   const { openProjectId, setOpenProjectId } = useCircuit();
   const project = openProjectId ? projectById[openProjectId] : undefined;
   const [copied, setCopied] = useState(false);
+
+  // Le bras servo s'active à chaque datasheet ouverte ou parcourue.
+  useEffect(() => {
+    if (openProjectId) playInterfaceSound("servo");
+  }, [openProjectId]);
 
   const group = project?.featured ? featuredProjects : bomProjects;
   const index = project ? group.findIndex((item) => item.id === project.id) : -1;

@@ -1,5 +1,6 @@
 import { ArrowUp, X } from "lucide-react";
 
+import { playInterfaceSound } from "@/lib/board-audio";
 import { useCircuit } from "@/lib/circuit";
 import { SectionTrace } from "@/components/board/section-trace";
 import { projectById, projectRefs } from "@/data/projects";
@@ -15,7 +16,10 @@ function SkillPart({ skill, refDes }: { skill: Skill; refDes: string }) {
     <button
       type="button"
       aria-pressed={active}
-      onClick={() => setLiveSkill(active ? null : toLiveSkill(skill.id))}
+      onClick={() => {
+        playInterfaceSound("relay");
+        setLiveSkill(active ? null : toLiveSkill(skill.id));
+      }}
       className={`skill-part ${count ? "" : "is-empty"}`}
       aria-label={`${skill.name}, ${refDes}, ${
         count

@@ -1,4 +1,5 @@
 import { events, type TestEvent } from "@/data/events";
+import { playInterfaceSound } from "@/lib/board-audio";
 
 const W = 1000;
 const H = 340;
@@ -106,7 +107,10 @@ export function Scope({
             className="scope-hit"
             aria-pressed={index === selected}
             aria-label={`T${index + 1} · ${event.name}`}
-            onClick={() => onSelect(index)}
+            onClick={() => {
+              playInterfaceSound("relay");
+              onSelect(index);
+            }}
             onMouseEnter={() => onSelect(index)}
             style={{
               left: `${(pulseX(index) / W) * 100}%`,

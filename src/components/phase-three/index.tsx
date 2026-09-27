@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { useCircuit } from "@/lib/circuit";
 import { SectionTrace } from "@/components/board/section-trace";
 import { Bom } from "@/components/phase-three/bom";
@@ -11,6 +13,21 @@ const moduleRef = (index: number) => projectRefs[featuredProjects[index]?.id ?? 
 export function PhaseThree() {
   const boardRef = useReveal<HTMLDivElement>();
   const { liveSkill, setOpenProjectId } = useCircuit();
+
+  // Écrans tactiles (pas de survol) : la puce au centre de l'écran s'allume pendant le défilement.
+  useEffect(() => {
+    const board = boardRef.current;
+    if (!board || !window.matchMedia("(hover: none)").matches) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries)
+          entry.target.classList.toggle("is-centered", entry.isIntersecting);
+      },
+      { rootMargin: "-42% 0px -42% 0px" },
+    );
+    board.querySelectorAll(".module-slot").forEach((slot) => observer.observe(slot));
+    return () => observer.disconnect();
+  }, [boardRef]);
 
   return (
     <section id="modules" className="relative px-4 pb-20 sm:px-8" aria-labelledby="modules-title">

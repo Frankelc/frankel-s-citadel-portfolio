@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { profile } from "@/data/profile";
 import { SECTIONS } from "@/data/sections";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { createBoardAudio, type BoardAudio } from "@/lib/board-audio";
+import { createBoardAudio, setInterfaceAudio, type BoardAudio } from "@/lib/board-audio";
 
 /** Section qui suit la plongée dans le processeur : là où « Passer le démarrage » amène. */
 const INTRO_END_ID = "apres-demarrage";
@@ -272,6 +272,7 @@ export function PhaseOne() {
 
   const toggleSound = async () => {
     if (!audioRef.current) audioRef.current = await createBoardAudio();
+    setInterfaceAudio(soundOn ? null : audioRef.current);
     if (soundOn) {
       audioRef.current.stopAll();
     } else {
@@ -358,10 +359,11 @@ export function PhaseOne() {
 
       <section
         ref={storyRef}
+        id="accueil"
         className="relative h-[220vh] motion-reduce:h-auto"
         aria-label="Mise sous tension de la carte"
       >
-        <div id="accueil" className="sticky top-0 h-screen overflow-hidden bg-background">
+        <div className="sticky top-0 h-screen overflow-hidden bg-background">
           <div
             ref={boardRef}
             className={`board-zoom h-full w-full origin-center max-sm:h-[56%] max-sm:pt-14 ${powered ? "is-powered" : "is-cold"}`}

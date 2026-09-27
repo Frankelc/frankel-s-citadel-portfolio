@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CircuitProvider } from "@/components/board/circuit";
+import { NavRail } from "@/components/board/nav-rail";
 import { PhaseFive } from "@/components/phase-five";
 import { PhaseFour } from "@/components/phase-four";
 import { PhaseOne } from "@/components/phase-one";
@@ -49,6 +50,7 @@ function Index() {
         </CircuitProvider>
       </main>
       <SiteFooter />
+      <NavRail />
     </>
   );
 }

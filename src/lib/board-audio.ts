@@ -37,3 +37,15 @@ export async function createBoardAudio(): Promise<BoardAudio> {
     },
   };
 }
+
+// Sons d'interface (compétences, datasheets, analyseur) : ils ne jouent que lorsque le
+// visiteur a activé le son avec le bouton de l'en-tête.
+let interfaceAudio: BoardAudio | null = null;
+
+export function setInterfaceAudio(audio: BoardAudio | null) {
+  interfaceAudio = audio;
+}
+
+export function playInterfaceSound(sound: "boot" | "relay" | "servo") {
+  interfaceAudio?.[sound]();
+}
