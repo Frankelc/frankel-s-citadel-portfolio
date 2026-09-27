@@ -4,23 +4,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
-  --font-sans: "Alegreya Sans", sans-serif;
-  --font-display: "IM Fell English", serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-display: "Chakra Petch", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -47,7 +34,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
+  --color-pcb: var(--pcb);
+  --color-pcb-light: var(--pcb-light);
+  --color-copper: var(--copper);
+  --color-copper-light: var(--copper-light);
+  --color-silk: var(--silk);
+  --color-die: var(--die);
+  --color-led: var(--led);
+  --color-alert: var(--alert);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -61,86 +55,72 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-parchment: var(--parchment);
-  --color-blood: var(--blood);
-  --color-blood-light: var(--blood-light);
-  --color-stone: var(--stone);
-  --shadow-seal: 0 10px 30px color-mix(in oklab, var(--blood) 45%, transparent);
 }
 
 :root {
-  --radius: 0.25rem;
-  --background: oklch(0.205 0.014 65);
-  --foreground: oklch(0.885 0.035 83);
-  --card: oklch(0.26 0.024 67);
-  --card-foreground: oklch(0.885 0.035 83);
-  --popover: oklch(0.24 0.02 67);
-  --popover-foreground: oklch(0.885 0.035 83);
-  --primary: oklch(0.43 0.13 27);
-  --primary-foreground: oklch(0.92 0.033 84);
-  --secondary: oklch(0.405 0.048 114);
-  --secondary-foreground: oklch(0.92 0.033 84);
-  --muted: oklch(0.3 0.018 70);
-  --muted-foreground: oklch(0.69 0.03 78);
-  --accent: oklch(0.41 0.065 67);
-  --accent-foreground: oklch(0.92 0.033 84);
-  --destructive: oklch(0.43 0.13 27);
-  --destructive-foreground: oklch(0.92 0.033 84);
-  --border: oklch(0.54 0.025 70 / 35%);
-  --input: oklch(0.54 0.025 70 / 45%);
-  --ring: oklch(0.65 0.12 32);
-  --parchment: oklch(0.885 0.035 83);
-  --blood: oklch(0.43 0.13 27);
-  --blood-light: oklch(0.61 0.16 31);
-  --stone: oklch(0.49 0.021 74);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --radius: 0.15rem;
+  --background: oklch(0.31 0.062 162);
+  --foreground: oklch(0.94 0.012 145);
+  --card: oklch(0.27 0.05 162);
+  --card-foreground: oklch(0.94 0.012 145);
+  --popover: oklch(0.22 0.008 150);
+  --popover-foreground: oklch(0.94 0.012 145);
+  --primary: oklch(0.68 0.118 72);
+  --primary-foreground: oklch(0.22 0.008 150);
+  --secondary: oklch(0.385 0.072 162);
+  --secondary-foreground: oklch(0.94 0.012 145);
+  --muted: oklch(0.34 0.05 162);
+  --muted-foreground: oklch(0.82 0.02 145);
+  --accent: oklch(0.82 0.17 155);
+  --accent-foreground: oklch(0.22 0.008 150);
+  --destructive: oklch(0.63 0.19 25);
+  --destructive-foreground: oklch(0.94 0.012 145);
+  --border: oklch(0.68 0.118 72 / 35%);
+  --input: oklch(0.68 0.118 72 / 45%);
+  --ring: oklch(0.82 0.17 155);
+  --pcb: oklch(0.31 0.062 162);
+  --pcb-light: oklch(0.385 0.072 162);
+  --copper: oklch(0.68 0.118 72);
+  --copper-light: oklch(0.79 0.098 72);
+  --silk: oklch(0.94 0.012 145);
+  --die: oklch(0.22 0.008 150);
+  --led: oklch(0.82 0.17 155);
+  --alert: oklch(0.63 0.19 25);
+  --chart-1: oklch(0.68 0.118 72);
+  --chart-2: oklch(0.82 0.17 155);
+  --chart-3: oklch(0.385 0.072 162);
+  --chart-4: oklch(0.79 0.098 72);
+  --chart-5: oklch(0.63 0.19 25);
+  --sidebar: oklch(0.22 0.008 150);
+  --sidebar-foreground: oklch(0.94 0.012 145);
+  --sidebar-primary: oklch(0.68 0.118 72);
+  --sidebar-primary-foreground: oklch(0.22 0.008 150);
+  --sidebar-accent: oklch(0.385 0.072 162);
+  --sidebar-accent-foreground: oklch(0.94 0.012 145);
+  --sidebar-border: oklch(0.68 0.118 72 / 30%);
+  --sidebar-ring: oklch(0.82 0.17 155);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: oklch(0.31 0.062 162);
+  --foreground: oklch(0.94 0.012 145);
+  --card: oklch(0.27 0.05 162);
+  --card-foreground: oklch(0.94 0.012 145);
+  --popover: oklch(0.22 0.008 150);
+  --popover-foreground: oklch(0.94 0.012 145);
+  --primary: oklch(0.68 0.118 72);
+  --primary-foreground: oklch(0.22 0.008 150);
+  --secondary: oklch(0.385 0.072 162);
+  --secondary-foreground: oklch(0.94 0.012 145);
+  --muted: oklch(0.34 0.05 162);
+  --muted-foreground: oklch(0.82 0.02 145);
+  --accent: oklch(0.82 0.17 155);
+  --accent-foreground: oklch(0.22 0.008 150);
+  --destructive: oklch(0.63 0.19 25);
+  --destructive-foreground: oklch(0.94 0.012 145);
+  --border: oklch(0.68 0.118 72 / 35%);
+  --input: oklch(0.68 0.118 72 / 45%);
+  --ring: oklch(0.82 0.17 155);
 }
 
 @layer base {
@@ -161,198 +141,925 @@
   }
 
   ::selection {
-    background: var(--blood);
-    color: var(--parchment);
+    background: var(--copper);
+    color: var(--die);
   }
 }
 
-@utility bg-scene-shade {
-  background: linear-gradient(180deg, color-mix(in oklab, var(--background) 24%, transparent) 0%, color-mix(in oklab, var(--background) 7%, transparent) 42%, color-mix(in oklab, var(--background) 94%, transparent) 100%);
+.silk-brand {
+  fill: #e9efe7;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.28em;
 }
 
-@utility bg-colossus-haze {
-  background: color-mix(in oklab, var(--blood) 30%, transparent);
+.silk-label {
+  fill: #e9efe7;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
 }
 
-@utility bg-welcome {
-  background: radial-gradient(circle at 82% 18%, color-mix(in oklab, var(--blood) 10%, transparent), transparent 28%), repeating-linear-gradient(94deg, color-mix(in oklab, var(--stone) 4%, transparent) 0 1px, transparent 1px 8px), var(--background);
+.die-mark {
+  fill: #e9efe7;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
 }
 
-@utility bg-rift {
-  background: linear-gradient(90deg, transparent, var(--blood-light), var(--parchment), var(--blood-light), transparent);
-  box-shadow: 0 0 26px color-mix(in oklab, var(--blood-light) 70%, transparent);
+.die-sub {
+  fill: #c8893b;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
 }
 
-.stone-title {
+.cpu-mark {
+  fill: #e9efe7;
   font-family: var(--font-display);
-  letter-spacing: 0;
-  text-shadow: 0 2px 0 var(--background), 0 5px 14px color-mix(in oklab, var(--background) 90%, transparent);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
-.intro-reveal {
-  animation: scene-reveal 1.6s ease-out both;
+.cpu-mark-sm {
+  fill: #c8893b;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
 }
 
-.mist {
-  position: absolute;
-  inset-inline: -20%;
-  height: 28%;
-  pointer-events: none;
-  filter: blur(28px);
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--parchment) 12%, transparent), color-mix(in oklab, var(--stone) 20%, transparent), transparent);
-  animation: mist-drift 16s ease-in-out infinite alternate;
+.cpu-tagline {
+  fill: #e9efe7;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.04em;
 }
 
-.mist-one { bottom: 16%; }
-.mist-two { top: 18%; opacity: 0.42; animation-duration: 23s; animation-direction: alternate-reverse; }
-
-.colossus-depth {
-  transform-origin: 35% 20%;
-  filter: drop-shadow(0 0 34px color-mix(in oklab, var(--blood) 38%, transparent));
+.binary-text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
 }
 
-.colossus-silhouette {
-  clip-path: polygon(22% 0, 72% 3%, 86% 21%, 81% 42%, 100% 60%, 82% 100%, 18% 94%, 4% 58%, 15% 35%, 0 17%);
-  background: linear-gradient(118deg, color-mix(in oklab, var(--stone) 22%, var(--background)), var(--background) 64%);
-  box-shadow: inset -18px -10px 60px color-mix(in oklab, var(--blood) 14%, transparent);
-}
-
-.colossus-rift {
-  position: absolute;
-  display: block;
-  width: 3px;
-  background: linear-gradient(var(--blood), var(--parchment), var(--blood-light));
-  box-shadow: 0 0 9px var(--blood-light), 0 0 24px var(--blood);
-  clip-path: polygon(30% 0, 100% 18%, 35% 42%, 85% 63%, 0 100%, 38% 67%, 0 45%, 62% 24%);
-  animation: rift-breathe 2.4s ease-in-out infinite alternate;
-}
-
-.rift-one { left: 42%; top: 18%; height: 30%; transform: rotate(18deg); }
-.rift-two { left: 61%; top: 38%; height: 37%; transform: rotate(-11deg); animation-delay: -0.8s; }
-.rift-three { left: 26%; top: 49%; height: 24%; transform: rotate(31deg); animation-delay: -1.5s; }
-
-.breach-interior {
-  transform-origin: center;
-  background: radial-gradient(ellipse at 50% 58%, color-mix(in oklab, var(--blood-light) 24%, transparent), transparent 22%), linear-gradient(180deg, color-mix(in oklab, var(--secondary) 32%, var(--background)), var(--background));
-}
-
-.breach-vault {
-  position: absolute;
-  left: 50%;
-  top: 7%;
-  width: min(56vw, 44rem);
-  height: 93%;
-  transform: translateX(-50%);
-  border: 1px solid color-mix(in oklab, var(--parchment) 16%, transparent);
-  border-bottom: 0;
-  border-radius: 50% 50% 0 0;
-  background: repeating-linear-gradient(90deg, transparent 0 12%, color-mix(in oklab, var(--stone) 7%, transparent) 12% 12.3%), linear-gradient(180deg, color-mix(in oklab, var(--stone) 22%, var(--background)), var(--background) 72%);
-  box-shadow: inset 0 0 80px var(--background), 0 0 90px color-mix(in oklab, var(--blood) 24%, transparent);
-}
-
-.wall-stage { perspective: 1200px; }
-
-.wall-panel {
-  position: absolute;
-  inset-block: -4%;
-  width: 56%;
-  overflow: hidden;
-  transform-origin: center;
-  filter: brightness(0.83) contrast(1.12);
-  backface-visibility: hidden;
-  box-shadow: 0 0 70px color-mix(in oklab, var(--background) 92%, transparent);
-}
-
-.wall-panel-left {
-  left: -2%;
-  clip-path: polygon(0 0, 100% 0, 96% 13%, 100% 33%, 94% 53%, 100% 73%, 95% 100%, 0 100%);
-  transform-origin: left center;
-}
-
-.wall-panel-right {
-  right: -2%;
-  clip-path: polygon(5% 0, 100% 0, 100% 100%, 4% 100%, 0 79%, 6% 58%, 0 38%, 4% 17%);
-  transform-origin: right center;
-}
-
-.wall-image {
-  position: absolute;
-  top: 4%;
-  height: 100%;
-  width: 100vw;
-  max-width: none;
-  object-fit: cover;
-  object-position: 44% center;
-}
-
-.wall-image-left { left: 2%; }
-.wall-image-right { right: 2%; }
-
-.impact-flash {
-  border-radius: 50%;
-  background: var(--parchment);
-  box-shadow: 0 0 34px 16px var(--blood-light), 0 0 120px 58px color-mix(in oklab, var(--blood) 70%, transparent);
-}
-
-.shockwave {
-  border: 3px solid color-mix(in oklab, var(--parchment) 78%, transparent);
-  border-radius: 50%;
-  box-shadow: inset 0 0 30px color-mix(in oklab, var(--blood-light) 55%, transparent), 0 0 40px color-mix(in oklab, var(--blood-light) 50%, transparent);
-}
-
-.crack {
-  clip-path: polygon(47% 0, 58% 12%, 46% 21%, 64% 36%, 52% 48%, 70% 61%, 53% 74%, 60% 100%, 46% 78%, 54% 65%, 38% 50%, 48% 37%, 33% 23%);
-  background: linear-gradient(90deg, transparent 34%, var(--blood-light) 48%, var(--parchment) 51%, var(--blood-light) 55%, transparent 68%);
-  filter: drop-shadow(0 0 12px var(--blood-light));
-}
-
-.debris {
-  --angle: calc(var(--i) * 27deg);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: calc(6px + mod(var(--i), 5) * 3px);
-  height: calc(8px + mod(var(--i), 4) * 5px);
+.binary-layer {
   opacity: 0;
-  background: linear-gradient(135deg, var(--stone), var(--background));
-  transform: rotate(var(--angle));
-  clip-path: polygon(12% 4%, 90% 0, 100% 71%, 62% 100%, 0 79%);
-  box-shadow: 0 0 10px color-mix(in oklab, var(--blood-light) 25%, transparent);
 }
 
-.recruit-frame::before,
-.recruit-frame::after {
+.binary-layer.is-on {
+  opacity: 0.55;
+}
+
+.current-pulses .pulse {
+  stroke-dasharray: 14 72;
+  stroke-dashoffset: 0;
+}
+
+/* Vue 3D inclinée pendant l'assemblage, la carte se met à plat à la mise sous tension. */
+.board-tilt {
+  transform-origin: 50% 62%;
+  transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.board-zoom.is-cold .board-tilt {
+  transform: perspective(1600px) rotateX(26deg) scale(0.9);
+}
+
+/* Téléphone : la carte occupe la moitié haute et gagne un peu en taille. */
+@media (max-width: 639px) {
+  .board-zoom.is-powered .board-tilt {
+    transform: scale(1.12);
+  }
+
+  .board-zoom.is-cold .board-tilt {
+    transform: perspective(1200px) rotateX(22deg) scale(1);
+  }
+}
+
+/* Silicium du processeur : grille de cellules en cuivre sur la puce noire. */
+.die-reveal {
+  background:
+    repeating-linear-gradient(0deg, oklch(0.68 0.118 72 / 22%) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, oklch(0.68 0.118 72 / 22%) 0 1px, transparent 1px 22px),
+    var(--die);
+}
+
+.die-block {
+  display: flex;
+  min-height: clamp(5.5rem, 16vh, 9rem);
+  flex-direction: column;
+  border: 1px solid oklch(0.68 0.118 72 / 45%);
+  background: oklch(0.22 0.008 150 / 85%);
+  padding: 0.75rem;
+  opacity: 0.55;
+}
+
+.die-block.is-active {
+  border-color: var(--led);
+  box-shadow: 0 0 24px oklch(0.82 0.17 155 / 25%);
+  opacity: 1;
+}
+
+/* Liaison entre sections : piste verticale, via et point de test sérigraphié. */
+.section-trace {
+  display: flex;
+  height: 7rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.section-trace svg {
+  flex: 1;
+}
+
+.trace-pulse {
+  stroke-dasharray: 10 40;
+  animation: trace-flow 1.6s linear infinite;
+}
+
+.section-trace.is-reverse .trace-pulse {
+  stroke-dasharray: 16 18;
+  animation-direction: reverse;
+  animation-duration: 0.6s;
+}
+
+.section-trace-via {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 3px solid var(--copper);
+  background: var(--die);
+}
+
+/* Fiche technique : panneau de puce avec sérigraphie. */
+.datasheet {
+  border: 1px solid oklch(0.94 0.012 145 / 16%);
+  background:
+    linear-gradient(to bottom, oklch(0.22 0.008 150 / 55%), oklch(0.22 0.008 150 / 35%)), var(--pcb);
+  box-shadow: 0 30px 80px -40px oklch(0 0 0 / 70%);
+}
+
+.datasheet-heading {
+  border-bottom: 1px solid oklch(0.68 0.118 72 / 40%);
+  padding-bottom: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+}
+
+.datasheet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--silk);
+  text-decoration: underline;
+  text-decoration-color: oklch(0.68 0.118 72 / 60%);
+  text-underline-offset: 4px;
+}
+
+.datasheet-link:hover,
+.datasheet-link:focus-visible {
+  color: var(--led);
+}
+
+.pinout-body-label {
+  fill: var(--silk);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.pinout-num {
+  fill: var(--silk);
+  opacity: 0.55;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.pinout-name {
+  fill: var(--silk);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+.pinout-pad {
+  fill: var(--copper);
+  transition: fill 0.3s;
+}
+
+/* Les broches s'allument une à une quand la fiche entre à l'écran. */
+.reveal[data-reveal="shown"] .pinout-pad {
+  animation: pin-light 0.9s ease-out both;
+  animation-delay: calc(var(--pin) * 70ms + 300ms);
+}
+
+.pinout-pin:hover .pinout-pad {
+  fill: var(--led);
+}
+
+.reveal[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.reveal[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Modules : puces de projet montées sur la carte. */
+.module-slot {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.module-trace {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  width: 3px;
+  height: 2.2rem;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, var(--copper), var(--copper));
+  background-size: 100% 200%;
+}
+
+.module-slot:hover .module-trace,
+.module-slot:focus-within .module-trace {
+  background: linear-gradient(
+    to bottom,
+    var(--copper) 0 30%,
+    var(--led) 45% 60%,
+    var(--copper) 75%
+  );
+  background-size: 100% 300%;
+  animation: current-down 0.9s linear infinite;
+}
+
+.module-chip-button {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+}
+
+.module-chip-button:focus-visible {
+  outline: 2px solid var(--led);
+  outline-offset: 6px;
+}
+
+.module-body {
+  position: relative;
+  display: flex;
+  min-height: 11rem;
+  flex: 1;
+  flex-direction: column;
+  border-radius: 4px;
+  border: 1px solid oklch(0.94 0.012 145 / 12%);
+  background: linear-gradient(160deg, #202422, var(--die) 55%);
+  padding: 1rem 1.1rem;
+  box-shadow: 0 16px 30px -18px oklch(0 0 0 / 80%);
+  transition:
+    border-color 0.25s,
+    transform 0.25s;
+}
+
+.module-chip-button:hover .module-body,
+.module-chip-button:focus-visible .module-body {
+  border-color: oklch(0.82 0.17 155 / 55%);
+  transform: translateY(-2px);
+}
+
+.module-dot {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.8rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: oklch(0.94 0.012 145 / 25%);
+}
+
+.module-pins {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 0.9rem;
+}
+
+.module-pins span {
+  width: 7px;
+  height: 9px;
+  background: var(--copper);
+  transition: background-color 0.2s;
+}
+
+.module-pins.is-top span {
+  border-radius: 1px 1px 0 0;
+}
+
+.module-pins.is-bottom span {
+  border-radius: 0 0 1px 1px;
+}
+
+.module-chip-button:hover .module-pins span,
+.module-chip-button:focus-visible .module-pins span {
+  background: var(--led);
+  box-shadow: 0 0 8px oklch(0.82 0.17 155 / 60%);
+}
+
+.reveal[data-reveal="shown"] .module-slot {
+  animation: module-mount 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.reveal[data-reveal="shown"] li:nth-child(4n + 2) .module-slot {
+  animation-delay: 80ms;
+}
+
+.reveal[data-reveal="shown"] li:nth-child(4n + 3) .module-slot {
+  animation-delay: 160ms;
+}
+
+.reveal[data-reveal="shown"] li:nth-child(4n + 4) .module-slot {
+  animation-delay: 240ms;
+}
+
+/* Compétence sous tension : modules reliés allumés, les autres en veille. */
+/* Filtre plutôt qu'opacité : l'animation d'apparition fige déjà l'opacité à 1. */
+.module-slot {
+  transition: filter 0.3s;
+}
+
+.module-slot.is-unlinked {
+  filter: grayscale(0.8) brightness(0.5);
+}
+
+.module-slot.is-linked .module-trace {
+  background: linear-gradient(
+    to bottom,
+    var(--copper) 0 30%,
+    var(--led) 45% 60%,
+    var(--copper) 75%
+  );
+  background-size: 100% 300%;
+  animation: current-down 0.9s linear infinite reverse;
+}
+
+.module-slot.is-linked .module-pins span {
+  background: var(--led);
+  box-shadow: 0 0 8px oklch(0.82 0.17 155 / 60%);
+}
+
+.module-slot.is-linked .module-body {
+  border-color: oklch(0.82 0.17 155 / 70%);
+}
+
+.module-slot.is-linked .module-dot {
+  background: var(--led);
+  box-shadow: 0 0 10px var(--led);
+}
+
+/* Bibliothèque : zones de la carte et composants CMS. */
+.skill-zone {
+  position: relative;
+  border: 1px dashed oklch(0.94 0.012 145 / 28%);
+  border-radius: 6px;
+  background: oklch(0.22 0.008 150 / 25%);
+  padding: 1rem 1.1rem 1.25rem;
+}
+
+.skill-zone::before,
+.skill-zone::after {
   content: "";
   position: absolute;
-  inset: 7px;
-  pointer-events: none;
-  border-top: 2px solid color-mix(in oklab, var(--parchment) 22%, transparent);
-  border-bottom: 2px solid color-mix(in oklab, var(--parchment) 22%, transparent);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 2px solid var(--copper);
+  background: var(--die);
 }
 
-@keyframes mist-drift {
-  from { transform: translate3d(-5%, 0, 0) scale(1); opacity: 0.38; }
-  to { transform: translate3d(7%, -4%, 0) scale(1.08); opacity: 0.7; }
+.skill-zone::before {
+  top: -5px;
+  left: -5px;
 }
 
-@keyframes scene-reveal {
-  from { opacity: 0; filter: brightness(0); }
-  to { opacity: 1; filter: brightness(1); }
+.skill-zone::after {
+  right: -5px;
+  bottom: -5px;
 }
 
-@keyframes rift-breathe {
-  from { opacity: 0.45; filter: brightness(0.8); }
-  to { opacity: 1; filter: brightness(1.7); }
+.skill-part {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  cursor: pointer;
+  text-align: left;
 }
 
-@media (min-width: 640px) {
-  .wall-image { object-position: 62% center; }
+.skill-part:focus-visible {
+  outline: 2px solid var(--led);
+  outline-offset: 3px;
+}
+
+.skill-cap {
+  width: 7px;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, var(--copper-light), var(--copper));
+}
+
+.skill-cap:first-child {
+  border-radius: 2px 0 0 2px;
+}
+
+.skill-cap:last-child {
+  border-radius: 0 2px 2px 0;
+}
+
+.skill-body {
+  display: inline-flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.45rem;
+  background: var(--die);
+  padding: 0.35rem 0.6rem;
+  transition: background-color 0.2s;
+}
+
+.skill-led {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: oklch(0.94 0.012 145 / 20%);
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.skill-part:hover .skill-body {
+  background: #262b28;
+}
+
+.skill-part:hover .skill-cap,
+.skill-part[aria-pressed="true"] .skill-cap {
+  background: var(--led);
+}
+
+.skill-part[aria-pressed="true"] .skill-body {
+  background: #1c3326;
+}
+
+.skill-part[aria-pressed="true"] .skill-led {
+  background: var(--led);
+  box-shadow: 0 0 8px var(--led);
+}
+
+.skill-part.is-empty .skill-body {
+  opacity: 0.7;
+}
+
+.probe {
+  border: 1px solid oklch(0.82 0.17 155 / 35%);
+  background: oklch(0.22 0.008 150 / 94%);
+  padding: 0.8rem 1rem;
+  box-shadow: 0 18px 40px -18px oklch(0 0 0 / 80%);
+  backdrop-filter: blur(8px);
+}
+
+/* Journal de tests : écran d'analyseur logique. */
+.scope {
+  border: 1px solid oklch(0.94 0.012 145 / 16%);
+  border-radius: 6px;
+  background: #0b1410;
+  box-shadow:
+    inset 0 0 60px oklch(0.82 0.17 155 / 6%),
+    0 30px 80px -40px oklch(0 0 0 / 80%);
+}
+
+.scope-screen {
+  border-radius: 4px;
+  background: radial-gradient(ellipse at 50% 45%, #0f2019, #070d0a 80%);
+}
+
+.scope-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+}
+
+.scope-trace {
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+.reveal[data-reveal="shown"] .scope-trace {
+  stroke-dasharray: 1;
+  animation: scope-draw 1.8s ease-out both;
+}
+
+.scope-cursor {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.scope-sweep {
+  opacity: 0.18;
+  animation: scope-sweep 4.5s linear infinite;
+}
+
+.scope-hit {
+  position: absolute;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.scope-hit:hover,
+.scope-hit[aria-pressed="true"] {
+  background: oklch(0.94 0.012 145 / 7%);
+  box-shadow: inset 0 0 0 1px oklch(0.94 0.012 145 / 25%);
+}
+
+.scope-hit:focus-visible {
+  outline: 2px solid var(--led);
+  outline-offset: 2px;
+}
+
+.log-row {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 2rem 5.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.log-row:hover {
+  background: oklch(0.22 0.008 150 / 40%);
+}
+
+.log-row[aria-pressed="true"] {
+  background: oklch(0.82 0.17 155 / 8%);
+  box-shadow: inset 3px 0 0 var(--led);
+}
+
+.log-row:focus-visible {
+  outline: 2px solid var(--led);
+  outline-offset: -2px;
+}
+
+@media (max-width: 639px) {
+  /* Le SVG est réduit d'environ 60 % sur téléphone : on compense la taille du texte. */
+  .scope-label {
+    font-size: 28px;
+    letter-spacing: 0.06em;
+  }
+
+  .log-row {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+
+  .log-row > :nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .log-row > :nth-child(3) {
+    grid-column: 2;
+  }
+}
+
+/* Port COM : terminal série, câble et robot qui fait signe. */
+.terminal {
+  border: 1px solid oklch(0.94 0.012 145 / 16%);
+  border-radius: 6px;
+  background: #0b1410;
+  box-shadow: 0 30px 80px -40px oklch(0 0 0 / 80%);
+}
+
+.reveal[data-reveal="shown"] .term-line {
+  animation: term-type 0.35s steps(1) both;
+}
+
+.reveal[data-reveal="shown"] .term-line:nth-child(2) {
+  animation-delay: 0.45s;
+}
+
+.reveal[data-reveal="shown"] .term-line:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+.term-cursor {
+  animation: blink 0.9s steps(1) infinite;
+}
+
+.port-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid oklch(0.94 0.012 145 / 30%);
+  padding: 0.7rem 1.1rem;
+  font-weight: 500;
+  color: var(--silk);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.port-button:hover {
+  border-color: var(--led);
+  color: var(--led);
+}
+
+.port-button.is-primary {
+  border-color: var(--copper);
+  background: var(--copper);
+  color: var(--die);
+}
+
+.port-button.is-primary:hover {
+  background: var(--copper-light);
+  color: var(--die);
+}
+
+.port-button:focus-visible {
+  outline: 2px solid var(--led);
+  outline-offset: 3px;
+}
+
+.port-signal {
+  stroke-dasharray: 6 26;
+  animation: port-flow 1.4s linear infinite;
+}
+
+.port-led {
+  animation: led-breathe 1.2s ease-in-out infinite alternate;
+}
+
+.mascot-arm-right {
+  transform-box: fill-box;
+  transform-origin: 31% 13%;
+  transition: transform 0.3s;
+}
+
+.mascot.is-waving .mascot-arm-right {
+  animation: mascot-wave 0.7s ease-in-out infinite alternate;
+}
+
+.silk-footer {
+  border-top: 1px solid oklch(0.94 0.012 145 / 12%);
+  background: #0a2a1f;
+}
+
+/* Badges, liens et états des projets. */
+.pcb-badge {
+  border: 1px solid oklch(0.68 0.118 72 / 45%);
+  padding: 0.1rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--copper-light);
+}
+
+.pcb-badge.is-live {
+  border-color: oklch(0.82 0.17 155 / 55%);
+  color: var(--led);
+}
+
+.pcb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 13px;
+  color: var(--silk);
+  text-decoration: underline;
+  text-decoration-color: oklch(0.68 0.118 72 / 55%);
+  text-underline-offset: 3px;
+}
+
+.pcb-link:hover,
+.pcb-link:focus-visible {
+  color: var(--led);
+}
+
+.todo-text {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: oklch(0.94 0.012 145 / 45%);
+}
+
+.datasheet-term {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+  padding-top: 0.2rem;
+}
+
+.pin-pad {
+  width: 14px;
+  height: 7px;
+  background: var(--copper);
+}
+
+.bom-filter {
+  flex-shrink: 0;
+  white-space: nowrap;
+  border: 1px solid oklch(0.94 0.012 145 / 18%);
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: oklch(0.94 0.012 145 / 75%);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.bom-filter:hover {
+  border-color: var(--copper);
+  color: var(--silk);
+}
+
+.bom-filter[aria-pressed="true"] {
+  border-color: var(--led);
+  background: oklch(0.82 0.17 155 / 12%);
+  color: var(--led);
+}
+
+.bom-filter:focus-visible {
+  outline: 2px solid var(--led);
+  outline-offset: 2px;
+}
+
+.die-exit {
+  background: linear-gradient(to bottom, var(--die), var(--background) 14rem);
+}
+
+.board-zoom.is-powered .led-core,
+.board-zoom.is-powered .mascot-eye {
+  filter: url(#led-glow);
+  animation: led-breathe 1.8s ease-in-out infinite alternate;
+}
+
+.board-zoom.is-cold .led-core,
+.board-zoom.is-cold .mascot-eye {
+  fill: #1a1d1b;
+  filter: none;
+}
+
+.board-zoom.is-cold .module-chip:not(.is-placed) {
+  opacity: 0;
+}
+
+.board-zoom.is-powered .binary-text {
+  animation: binary-drift 9s linear infinite;
+}
+
+.bios-cursor {
+  animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes led-breathe {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes binary-drift {
+  from {
+    letter-spacing: 0.12em;
+  }
+  to {
+    letter-spacing: 0.28em;
+  }
+}
+
+@keyframes trace-flow {
+  to {
+    stroke-dashoffset: -50;
+  }
+}
+
+@keyframes current-down {
+  from {
+    background-position: 0 100%;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes module-mount {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scope-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scope-sweep {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(900px);
+  }
+}
+
+@keyframes term-type {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes port-flow {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+
+@keyframes mascot-wave {
+  from {
+    transform: rotate(-120deg);
+  }
+  to {
+    transform: rotate(-165deg);
+  }
+}
+
+@keyframes pin-light {
+  0% {
+    fill: var(--copper);
+  }
+  35% {
+    fill: var(--led);
+  }
+  100% {
+    fill: var(--copper-light);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+  .board-zoom.is-powered .led-core,
+  .board-zoom.is-powered .mascot-eye,
+  .board-zoom.is-powered .binary-text,
+  .bios-cursor,
+  .trace-pulse,
+  .reveal .pinout-pad,
+  .module-slot,
+  .module-trace,
+  .scope-trace,
+  .scope-sweep,
+  .term-line,
+  .term-cursor,
+  .port-signal,
+  .port-led,
+  .mascot.is-waving .mascot-arm-right {
+    animation: none !important;
+  }
+
+  .board-zoom.is-cold .board-tilt {
+    transform: none;
   }
 }

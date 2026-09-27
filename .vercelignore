@@ -1,0 +1,8 @@
+.env*
+.dev.vars
+.wrangler
+.output
+.nitro
+.tanstack
+dist
+node_modules
