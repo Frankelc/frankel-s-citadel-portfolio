@@ -1,6 +1,8 @@
 import { ExternalLink, Github, Lock } from "lucide-react";
 
-import { TODO, type Context, type Project } from "@/data/projects";
+import type { ReactNode } from "react";
+
+import { isFilled, SHOW_TODO, TODO, type Context, type Project } from "@/data/projects";
 
 const CONTEXT_LABELS: Record<Context, string> = {
   perso: "Perso",
@@ -61,7 +63,14 @@ export function ProjectLinks({
 }
 
 /** Texte de projet, avec un style distinct quand il reste à compléter. */
-export function Filled({ text }: { text: string | undefined }) {
-  const value = text ?? TODO;
-  return value === TODO ? <span className="todo-text">{TODO}</span> : <>{value}</>;
+export function Filled({
+  text,
+  fallback = null,
+}: {
+  text: string | undefined;
+  /** Affiché à la place du texte manquant sur le site publié. */
+  fallback?: ReactNode;
+}) {
+  if (isFilled(text)) return <>{text}</>;
+  return SHOW_TODO ? <span className="todo-text">{TODO}</span> : <>{fallback}</>;
 }

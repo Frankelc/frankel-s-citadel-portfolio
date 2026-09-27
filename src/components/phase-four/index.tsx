@@ -1,23 +1,10 @@
 import { ArrowUp, X } from "lucide-react";
 
-import { useCircuit, type LiveSkill } from "@/lib/circuit";
+import { useCircuit } from "@/lib/circuit";
 import { SectionTrace } from "@/components/board/section-trace";
 import { projectById, projectRefs } from "@/data/projects";
-import { skillZones, type Skill, type SkillZone } from "@/data/skills";
+import { skillIndex, skillRef, skillZones, toLiveSkill, type Skill } from "@/data/skills";
 import { useReveal } from "@/hooks/use-reveal";
-
-const skillRef = (zone: SkillZone, index: number) => `${zone.prefix}${index + 1}`;
-
-// Index de chaque compétence par identifiant, pour retrouver sa note dans la sonde.
-const SKILLS = new Map<string, { skill: Skill; ref: string; zone: SkillZone }>(
-  skillZones.flatMap((zone) =>
-    zone.skills.map((skill, index) => [skill.id, { skill, ref: skillRef(zone, index), zone }]),
-  ),
-);
-
-function toLive(skill: Skill, ref: string): LiveSkill {
-  return { id: skill.id, name: skill.name, ref, projectIds: new Set(skill.projects) };
-}
 
 function SkillPart({ skill, refDes }: { skill: Skill; refDes: string }) {
   const { liveSkill, setLiveSkill } = useCircuit();
@@ -28,7 +15,7 @@ function SkillPart({ skill, refDes }: { skill: Skill; refDes: string }) {
     <button
       type="button"
       aria-pressed={active}
-      onClick={() => setLiveSkill(active ? null : toLive(skill, refDes))}
+      onClick={() => setLiveSkill(active ? null : toLiveSkill(skill.id))}
       className={`skill-part ${count ? "" : "is-empty"}`}
       aria-label={`${skill.name}, ${refDes}, ${
         count
@@ -54,8 +41,8 @@ function SkillPart({ skill, refDes }: { skill: Skill; refDes: string }) {
 
 /** Sonde de mesure : affiche les connexions de la compétence sous tension. */
 function Probe() {
-  const { liveSkill, setLiveSkill } = useCircuit();
-  const entry = liveSkill ? SKILLS.get(liveSkill.id) : undefined;
+  const { liveSkill, setLiveSkill, setOpenProjectId } = useCircuit();
+  const entry = liveSkill ? skillIndex.get(liveSkill.id) : undefined;
 
   if (!liveSkill || !entry) {
     return (
@@ -95,13 +82,14 @@ function Probe() {
           {linked.map((project) =>
             project ? (
               <li key={project.id}>
-                <a
-                  href={project.featured ? "#modules" : "#bom"}
-                  className="inline-flex items-center gap-1.5 border border-led/40 px-2 py-0.5 text-[12px] text-silk hover:border-led hover:text-led"
+                <button
+                  type="button"
+                  onClick={() => setOpenProjectId(project.id)}
+                  className="inline-flex items-center gap-1.5 border border-led/40 px-2 py-0.5 text-[12px] text-silk hover:border-led hover:bg-led/10 hover:text-led"
                 >
                   <span className="font-mono text-[10px] text-led">{projectRefs[project.id]}</span>
                   {project.title}
-                </a>
+                </button>
               </li>
             ) : null,
           )}

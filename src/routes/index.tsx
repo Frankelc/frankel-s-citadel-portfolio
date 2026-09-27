@@ -27,6 +27,11 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  // La page est identique pour tous les visiteurs : le CDN la garde en cache et la sert sans
+  // réveiller le serveur. Chaque nouveau déploiement repart d'un cache vide.
+  headers: () => ({
+    "Cache-Control": "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800",
+  }),
   component: Index,
 });
 

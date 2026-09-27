@@ -6,6 +6,7 @@
  * `note` sert pour une preuve qui n'est pas un projet (stage, cours).
  */
 import { projects } from "@/data/projects";
+import type { LiveSkill } from "@/lib/circuit";
 
 export type Skill = {
   id: string;
@@ -235,3 +236,23 @@ export const skillZones: SkillZone[] = [
     ],
   },
 ];
+
+export const skillRef = (zone: SkillZone, index: number) => `${zone.prefix}${index + 1}`;
+
+/** Chaque compétence par identifiant, avec sa référence et sa zone. */
+export const skillIndex = new Map<string, { skill: Skill; ref: string; zone: SkillZone }>(
+  skillZones.flatMap((zone) =>
+    zone.skills.map((skill, index) => [skill.id, { skill, ref: skillRef(zone, index), zone }]),
+  ),
+);
+
+export function toLiveSkill(id: string): LiveSkill | null {
+  const entry = skillIndex.get(id);
+  if (!entry) return null;
+  return {
+    id,
+    name: entry.skill.name,
+    ref: entry.ref,
+    projectIds: new Set(entry.skill.projects),
+  };
+}

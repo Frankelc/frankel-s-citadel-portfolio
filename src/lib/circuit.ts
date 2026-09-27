@@ -11,9 +11,17 @@ export type LiveSkill = {
 type Circuit = {
   liveSkill: LiveSkill | null;
   setLiveSkill: (skill: LiveSkill | null) => void;
+  /** Projet dont la datasheet est ouverte, depuis n'importe quelle section. */
+  openProjectId: string | null;
+  setOpenProjectId: (id: string | null) => void;
 };
 
-export const CircuitContext = createContext<Circuit>({ liveSkill: null, setLiveSkill: () => {} });
+export const CircuitContext = createContext<Circuit>({
+  liveSkill: null,
+  setLiveSkill: () => {},
+  openProjectId: null,
+  setOpenProjectId: () => {},
+});
 
 export function useCircuit() {
   return useContext(CircuitContext);

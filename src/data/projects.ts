@@ -10,6 +10,15 @@
 
 export const TODO = "[description à compléter]";
 
+/**
+ * Les « [description à compléter] » restent visibles en local (npm run dev) pour savoir quoi
+ * remplir, mais sont masqués sur le site publié.
+ */
+export const SHOW_TODO = import.meta.env.DEV;
+
+export const isFilled = (text: string | undefined): text is string =>
+  Boolean(text) && text !== TODO;
+
 export const CATEGORIES = {
   web: "Web et e-commerce",
   gestion: "Logiciels de gestion",

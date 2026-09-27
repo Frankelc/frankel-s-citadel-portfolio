@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import type Lenis from "lenis";
 import { ArrowDown, Github, Menu, SkipForward, Volume2, VolumeX } from "lucide-react";
 
 import { BiosScreen, BIOS_LINE_COUNT } from "@/components/phase-one/bios-screen";
@@ -9,6 +10,12 @@ import { SECTIONS } from "@/data/sections";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { createBoardAudio, type BoardAudio } from "@/lib/board-audio";
 
+/** Section qui suit la plongée dans le processeur : là où « Passer le démarrage » amène. */
+const INTRO_END_ID = "apres-demarrage";
+/** Mémorise pendant 24 h, dans tous les onglets, que le visiteur a déjà vu le démarrage. */
+const BOOTED_KEY = "fg-booted-at";
+const BOOTED_TTL_MS = 24 * 60 * 60 * 1000;
+
 export function PhaseOne() {
   const reduced = useReducedMotion();
   const storyRef = useRef<HTMLElement>(null);
@@ -16,6 +23,7 @@ export function PhaseOne() {
   const heroRef = useRef<HTMLDivElement>(null);
   const dieRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<BoardAudio | null>(null);
+  const lenisRef = useRef<Lenis | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const [biosLines, setBiosLines] = useState(1);
@@ -26,40 +34,81 @@ export function PhaseOne() {
   const soundOnRef = useRef(soundOn);
   soundOnRef.current = soundOn;
 
-  const skipBoot = useCallback(() => {
+  const powerOn = useCallback(() => {
     setShowBios(false);
     setBiosLines(BIOS_LINE_COUNT);
     setPlaced(true);
     setPowered(true);
-    document.getElementById("accueil")?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-  }, [reduced]);
+  }, []);
+
+  // Allume la carte et saute toute l'intro, y compris la plongée au scroll.
+  const skipBoot = useCallback(() => {
+    powerOn();
+    const target = document.getElementById(INTRO_END_ID);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY;
+    if (lenisRef.current) lenisRef.current.scrollTo(top, { immediate: true, force: true });
+    else window.scrollTo({ top, behavior: "instant" });
+  }, [powerOn]);
+
+  // Dès que le visiteur quitte le premier écran (molette, menu, lien, rechargement en milieu
+  // de page ou saut effectué avant que React soit prêt), la carte s'allume sans BIOS.
+  useEffect(() => {
+    if (powered) return;
+    const check = () => {
+      if (window.scrollY > window.innerHeight * 0.5) powerOn();
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    return () => window.removeEventListener("scroll", check);
+  }, [powered, powerOn]);
+
+  // Un visiteur qui revient dans les 24 h retrouve la carte déjà allumée.
+  useEffect(() => {
+    try {
+      const bootedAt = Number(window.localStorage.getItem(BOOTED_KEY));
+      if (bootedAt && Date.now() - bootedAt < BOOTED_TTL_MS) powerOn();
+    } catch {
+      // Stockage indisponible (navigation privée stricte) : on rejoue simplement le démarrage.
+    }
+  }, [powerOn]);
+
+  useEffect(() => {
+    if (!powered) return;
+    try {
+      window.localStorage.setItem(BOOTED_KEY, String(Date.now()));
+    } catch {
+      // Sans stockage, rien à mémoriser.
+    }
+  }, [powered]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      if (menuOpen) setMenuOpen(false);
-      else skipBoot();
+      if (menuOpen) {
+        setMenuOpen(false);
+        return;
+      }
+      // Échap ferme d'abord une datasheet ouverte, et ne saute l'intro que si on y est encore.
+      if (document.querySelector('[role="dialog"]')) return;
+      const introEnd = document.getElementById(INTRO_END_ID);
+      if (introEnd && introEnd.getBoundingClientRect().top > 0) skipBoot();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen, skipBoot]);
 
   useEffect(() => {
-    if (reduced) {
-      setShowBios(false);
-      setBiosLines(BIOS_LINE_COUNT);
-      setPlaced(true);
-      setPowered(true);
-    }
-  }, [reduced]);
+    if (reduced) powerOn();
+  }, [reduced, powerOn]);
 
   useEffect(() => {
     if (reduced || !showBios) return;
     if (biosLines >= BIOS_LINE_COUNT) {
-      const done = window.setTimeout(() => setShowBios(false), 420);
+      const done = window.setTimeout(() => setShowBios(false), 300);
       return () => window.clearTimeout(done);
     }
-    const tick = window.setTimeout(() => setBiosLines((n) => n + 1), biosLines === 0 ? 180 : 160);
+    const tick = window.setTimeout(() => setBiosLines((n) => n + 1), 110);
     return () => window.clearTimeout(tick);
   }, [biosLines, reduced, showBios]);
 
@@ -125,6 +174,8 @@ export function PhaseOne() {
         reach(0, 0.24);
       };
 
+      // Assemblage accéléré : environ 3 s au lieu de 6, pour arriver vite au contenu.
+      tl.timeScale(1.8);
       pickAndPlace(0, 198, 184);
       pickAndPlace(1, 1188, 708);
       pickAndPlace(2, 1364, 430);
@@ -167,6 +218,7 @@ export function PhaseOne() {
           frame = requestAnimationFrame(tick);
         };
         if (lenis) frame = requestAnimationFrame(tick);
+        lenisRef.current = lenis;
 
         const pulses = boardRef.current.querySelectorAll<SVGPathElement>(".current-pulses .pulse");
         // Le courant avance en continu et accélère avec le défilement.
@@ -206,6 +258,7 @@ export function PhaseOne() {
           cancelAnimationFrame(frame);
           gsap.ticker.remove(flow);
           lenis?.destroy();
+          lenisRef.current = null;
           ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         };
       },
@@ -258,13 +311,22 @@ export function PhaseOne() {
         >
           {soundOn ? <Volume2 /> : <VolumeX />}
         </Button>
+        {/* Un lien : le saut fonctionne même avant que React soit chargé. */}
         <Button
           variant="outline"
-          onClick={skipBoot}
+          asChild
           className="border-silk/25 bg-die/80 px-3 font-mono text-[10px] uppercase tracking-[0.14em] text-silk hover:bg-pcb-light hover:text-silk sm:text-xs"
         >
-          <SkipForward />
-          <span className={powered ? "max-sm:sr-only" : undefined}>Passer le démarrage</span>
+          <a
+            href={`#${INTRO_END_ID}`}
+            onClick={(event) => {
+              event.preventDefault();
+              skipBoot();
+            }}
+          >
+            <SkipForward />
+            <span className={powered ? "max-sm:sr-only" : undefined}>Passer le démarrage</span>
+          </a>
         </Button>
       </div>
 
@@ -296,7 +358,7 @@ export function PhaseOne() {
 
       <section
         ref={storyRef}
-        className="relative h-[320vh] motion-reduce:h-auto"
+        className="relative h-[220vh] motion-reduce:h-auto"
         aria-label="Mise sous tension de la carte"
       >
         <div id="accueil" className="sticky top-0 h-screen overflow-hidden bg-background">
@@ -370,7 +432,11 @@ export function PhaseOne() {
         </div>
       </section>
 
-      <section className="die-exit px-5 pb-16 pt-24 sm:px-8" aria-labelledby="suite-title">
+      <section
+        id={INTRO_END_ID}
+        className="die-exit px-5 pb-16 pt-24 sm:px-8"
+        aria-labelledby="suite-title"
+      >
         <div className="mx-auto max-w-3xl">
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-copper-light">
             Phase 1 · Accueil

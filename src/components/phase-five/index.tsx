@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUp } from "lucide-react";
+import { FileText } from "lucide-react";
 
 import { SectionTrace } from "@/components/board/section-trace";
 import { Scope } from "@/components/phase-five/scope";
@@ -7,6 +7,7 @@ import { Filled } from "@/components/phase-three/project-meta";
 import { events, type TestEvent } from "@/data/events";
 import { projectById, projectRefs } from "@/data/projects";
 import { useReveal } from "@/hooks/use-reveal";
+import { useCircuit } from "@/lib/circuit";
 
 const KIND_LABEL: Record<TestEvent["kind"], string> = { hackathon: "Hackathon", ctf: "CTF" };
 
@@ -21,13 +22,14 @@ function metaLine(event: TestEvent) {
 }
 
 function ProjectLink({ event }: { event: TestEvent }) {
+  const { setOpenProjectId } = useCircuit();
   const project = event.projectId ? projectById[event.projectId] : undefined;
   if (!project) return null;
   return (
-    <a href={project.featured ? "#modules" : "#bom"} className="pcb-link">
-      <ArrowUp className="size-3.5" aria-hidden="true" />
-      {projectRefs[project.id]} · {project.title}
-    </a>
+    <button type="button" onClick={() => setOpenProjectId(project.id)} className="pcb-link">
+      <FileText className="size-3.5" aria-hidden="true" />
+      Datasheet {projectRefs[project.id]} · {project.title}
+    </button>
   );
 }
 

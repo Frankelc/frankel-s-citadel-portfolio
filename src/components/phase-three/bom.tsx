@@ -35,7 +35,7 @@ export function Bom() {
   const searchId = useId();
   const [category, setCategory] = useState<Category | "all">("all");
   const [query, setQuery] = useState("");
-  const { liveSkill, setLiveSkill } = useCircuit();
+  const { liveSkill, setLiveSkill, setOpenProjectId } = useCircuit();
 
   // Une compétence mise sous tension repart d'une nomenclature sans autre filtre.
   useEffect(() => {
@@ -168,13 +168,22 @@ export function Bom() {
                   >
                     <td className="px-4 py-3 font-mono text-[12px] text-silk/55 sm:pl-7">{ref}</td>
                     <th scope="row" className="px-4 py-3 text-left font-medium text-silk">
-                      {project.title}
+                      <button
+                        type="button"
+                        onClick={() => setOpenProjectId(project.id)}
+                        className="bom-open"
+                      >
+                        {project.title}
+                      </button>
                       <span className="mt-0.5 block font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-copper">
                         {CATEGORIES[project.category]}
                       </span>
                     </th>
                     <td className="max-w-xs px-4 py-3 text-silk/75">
-                      <Filled text={project.description} />
+                      <Filled
+                        text={project.description}
+                        fallback={<span className="text-silk/35">—</span>}
+                      />
                     </td>
                     <td className="px-4 py-3">
                       <Stack stack={project.stack} />
@@ -197,7 +206,13 @@ export function Bom() {
               <li key={project.id} className="space-y-2.5 px-5 py-4">
                 <div className="flex items-baseline justify-between gap-3">
                   <h4 className="font-display text-lg font-semibold leading-tight text-silk">
-                    {project.title}
+                    <button
+                      type="button"
+                      onClick={() => setOpenProjectId(project.id)}
+                      className="bom-open text-left"
+                    >
+                      {project.title}
+                    </button>
                   </h4>
                   <span className="shrink-0 font-mono text-[11px] text-silk/50">{ref}</span>
                 </div>

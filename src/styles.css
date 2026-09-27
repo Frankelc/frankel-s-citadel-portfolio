@@ -873,6 +873,50 @@
   padding-top: 0.2rem;
 }
 
+.datasheet-tool {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid oklch(0.94 0.012 145 / 20%);
+  color: var(--silk);
+}
+
+.datasheet-tool:hover,
+.datasheet-tool:focus-visible {
+  border-color: var(--led);
+  color: var(--led);
+}
+
+.datasheet-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(0.94 0.012 145 / 80%);
+}
+
+.datasheet-nav:hover,
+.datasheet-nav:focus-visible {
+  color: var(--led);
+}
+
+.bom-open {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: oklch(0.68 0.118 72 / 45%);
+  text-underline-offset: 4px;
+}
+
+.bom-open:hover,
+.bom-open:focus-visible {
+  color: var(--led);
+}
+
 .pin-pad {
   width: 14px;
   height: 7px;

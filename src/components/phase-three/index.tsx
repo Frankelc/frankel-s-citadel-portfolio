@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useCircuit } from "@/lib/circuit";
 import { SectionTrace } from "@/components/board/section-trace";
 import { Bom } from "@/components/phase-three/bom";
@@ -12,9 +10,7 @@ const moduleRef = (index: number) => projectRefs[featuredProjects[index]?.id ?? 
 
 export function PhaseThree() {
   const boardRef = useReveal<HTMLDivElement>();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { liveSkill } = useCircuit();
-  const openProject = openIndex === null ? null : (featuredProjects[openIndex] ?? null);
+  const { liveSkill, setOpenProjectId } = useCircuit();
 
   return (
     <section id="modules" className="relative px-4 pb-20 sm:px-8" aria-labelledby="modules-title">
@@ -32,8 +28,9 @@ export function PhaseThree() {
             Les modules montés sur la carte
           </h2>
           <p className="mt-3 text-sm text-silk/70 sm:text-base">
-            Chaque puce est un projet. Cliquez dessus pour ouvrir sa datasheet. Tous les autres
-            projets sont listés dans la nomenclature, plus bas.
+            Chaque puce est un projet. Cliquez dessus pour ouvrir sa datasheet, puis parcourez les
+            modules avec les flèches. Tous les autres projets sont listés dans la nomenclature, plus
+            bas.
           </p>
         </header>
 
@@ -46,7 +43,7 @@ export function PhaseThree() {
                   project={project}
                   refDes={moduleRef(index)}
                   linked={liveSkill ? liveSkill.projectIds.has(project.id) : null}
-                  onOpen={() => setOpenIndex(index)}
+                  onOpen={() => setOpenProjectId(project.id)}
                 />
               </li>
             ))}
@@ -61,11 +58,7 @@ export function PhaseThree() {
         </div>
       </div>
 
-      <ModuleDatasheet
-        project={openProject}
-        refDes={openIndex === null ? "" : moduleRef(openIndex)}
-        onClose={() => setOpenIndex(null)}
-      />
+      <ModuleDatasheet />
     </section>
   );
 }
