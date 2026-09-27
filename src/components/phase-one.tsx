@@ -90,7 +90,8 @@ export function PhaseOne() {
             .to(colossusRef.current, { scale: 1.18, xPercent: 6, yPercent: 8, opacity: 1, duration: 2.1, ease: "power1.in" }, 0.25)
             .to(copyRef.current, { y: -24, opacity: 0, duration: 0.45 }, 1.75)
             .to(impactRef.current, { opacity: 1, scale: 1.35, duration: 0.08, ease: "power4.out" }, 2.18)
-            .to(sceneRef.current, { x: -14, y: 5, duration: 0.035, repeat: 9, yoyo: true }, 2.18)
+            .to(wallRef.current, { x: -14, y: 5, duration: 0.035, repeat: 9, yoyo: true }, 2.18)
+            .to(imageRef.current, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, 2.18)
             .to(shockwaveRef.current, { opacity: 0.85, scale: 5.5, duration: 0.42, ease: "power3.out" }, 2.2)
             .to(impactRef.current, { opacity: 0, scale: 2.1, duration: 0.28 }, 2.26)
             .to(debrisRef.current, { opacity: 1, duration: 0.06 }, 2.2)
@@ -103,7 +104,8 @@ export function PhaseOne() {
             .to(wallRef.current, { scale: 1.22, duration: 1.4, ease: "power2.in" }, 2.72)
             .to(colossusRef.current, { scale: 1.42, opacity: 0.34, duration: 1.25 }, 2.82)
             .to(breachRef.current, { scale: 1.7, filter: "brightness(1.35)", duration: 1.25, ease: "power2.in" }, 2.92)
-            .to(sceneRef.current, { scale: 1.13, opacity: 0.2, duration: 0.7 }, 4.0);
+            .to([leftWallRef.current, rightWallRef.current], { opacity: 0.12, duration: 0.7 }, 4.0)
+            .to(breachRef.current, { opacity: 0.28, duration: 0.7 }, 4.0);
         }
         cleanup = () => {
           cancelAnimationFrame(frame);

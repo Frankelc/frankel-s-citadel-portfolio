@@ -265,13 +265,13 @@
 
 .wall-panel-left {
   left: -2%;
-  clip-path: polygon(0 0, 100% 0, 84% 13%, 97% 33%, 78% 53%, 94% 73%, 73% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 96% 13%, 100% 33%, 94% 53%, 100% 73%, 95% 100%, 0 100%);
   transform-origin: left center;
 }
 
 .wall-panel-right {
   right: -2%;
-  clip-path: polygon(27% 0, 100% 0, 100% 100%, 22% 100%, 7% 79%, 25% 58%, 4% 38%, 19% 17%);
+  clip-path: polygon(5% 0, 100% 0, 100% 100%, 4% 100%, 0 79%, 6% 58%, 0 38%, 4% 17%);
   transform-origin: right center;
 }
 
