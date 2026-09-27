@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Check, ChevronLeft, ChevronRight, Link2, X } from "lucide-react";
 
+import { ProjectExploded } from "@/components/phase-three/project-exploded";
 import { Filled, ProjectBadges, ProjectLinks } from "@/components/phase-three/project-meta";
 import {
   bomProjects,
@@ -23,10 +24,16 @@ export function ModuleDatasheet() {
   const { openProjectId, setOpenProjectId } = useCircuit();
   const project = openProjectId ? projectById[openProjectId] : undefined;
   const [copied, setCopied] = useState(false);
+  const [exploded, setExploded] = useState(false);
 
-  // Le bras servo s'active à chaque datasheet ouverte ou parcourue.
+  // À chaque projet ouvert ou parcouru : le composant se referme puis se démonte en couches,
+  // et le bras servo s'active.
   useEffect(() => {
-    if (openProjectId) playInterfaceSound("servo");
+    setExploded(false);
+    if (!openProjectId) return;
+    playInterfaceSound("servo");
+    const timer = window.setTimeout(() => setExploded(true), 120);
+    return () => window.clearTimeout(timer);
   }, [openProjectId]);
 
   const group = project?.featured ? featuredProjects : bomProjects;
@@ -104,10 +111,14 @@ export function ModuleDatasheet() {
                   </DialogPrimitive.Description>
                 </div>
 
+                <ProjectExploded project={project} open={exploded} />
+
                 <dl className="grid gap-x-6 gap-y-5 text-sm sm:grid-cols-[9rem_minmax(0,1fr)]">
                   {showRow(hasContext) ? (
                     <>
-                      <dt className="datasheet-term">Contexte</dt>
+                      <dt className="datasheet-term">
+                        <span className="datasheet-layer">Fils</span> Contexte
+                      </dt>
                       <dd className="space-y-2">
                         <ProjectBadges project={project} />
                         {project.setting ? <p className="text-silk/80">{project.setting}</p> : null}
@@ -118,7 +129,9 @@ export function ModuleDatasheet() {
 
                   {showRow(isFilled(project.objective)) ? (
                     <>
-                      <dt className="datasheet-term">Objectif</dt>
+                      <dt className="datasheet-term">
+                        <span className="datasheet-layer">Puce</span> Objectif
+                      </dt>
                       <dd className="leading-relaxed text-silk/80">
                         <Filled text={project.objective} />
                       </dd>
@@ -127,7 +140,9 @@ export function ModuleDatasheet() {
 
                   {showRow(isFilled(project.work)) ? (
                     <>
-                      <dt className="datasheet-term">Ce que j’ai fait</dt>
+                      <dt className="datasheet-term">
+                        <span className="datasheet-layer">Puce</span> Ce que j’ai fait
+                      </dt>
                       <dd className="leading-relaxed text-silk/80">
                         <Filled text={project.work} />
                       </dd>
@@ -136,7 +151,9 @@ export function ModuleDatasheet() {
 
                   {showRow(project.stack.length > 0) ? (
                     <>
-                      <dt className="datasheet-term">Brochage (stack)</dt>
+                      <dt className="datasheet-term">
+                        <span className="datasheet-layer">Carte</span> Composants
+                      </dt>
                       <dd>
                         {project.stack.length ? (
                           <ol className="grid gap-x-4 sm:grid-cols-2">
@@ -160,7 +177,9 @@ export function ModuleDatasheet() {
                     </>
                   ) : null}
 
-                  <dt className="datasheet-term">Liens</dt>
+                  <dt className="datasheet-term">
+                    <span className="datasheet-layer">Broches</span> Liens
+                  </dt>
                   <dd>
                     <ProjectLinks project={project} />
                   </dd>

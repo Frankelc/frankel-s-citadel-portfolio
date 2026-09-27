@@ -123,6 +123,14 @@
   --ring: oklch(0.82 0.17 155);
 }
 
+/* Écartement des vues éclatées : 0 = composant assemblé, 1 = démonté. Déclarée comme nombre
+   pour pouvoir être animée par une transition. */
+@property --x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @layer base {
   html {
     overflow-x: clip;
@@ -936,6 +944,89 @@
   background: #0a2a1f;
 }
 
+/* Vues éclatées : projet (datasheet) et composant de chaque section. */
+.explode {
+  --x: 0;
+  transition: --x 0.95s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.explode.is-open {
+  --x: 1;
+}
+
+.explode-layer {
+  transform: translate(calc(var(--x) * var(--dx, 0px)), calc(var(--x) * var(--shift, 0px)));
+}
+
+.explode-callout {
+  opacity: var(--x);
+}
+
+.explode-label {
+  fill: var(--led);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.explode-detail {
+  fill: var(--silk);
+  fill-opacity: 0.65;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.explode-part-label {
+  fill: var(--silk);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.explode-cap-title {
+  fill: var(--silk);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.explode-cap-ref {
+  fill: var(--copper-light);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+}
+
+.section-part {
+  --x: 0;
+}
+
+.part-callout {
+  fill: var(--led);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.part-marking {
+  fill: var(--silk);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.2em;
+}
+
+.part-marking.is-dark {
+  fill: #2b2f33;
+}
+
+.datasheet-layer {
+  margin-right: 0.35rem;
+  border: 1px solid oklch(0.82 0.17 155 / 45%);
+  padding: 0 0.3rem;
+  color: var(--led);
+}
+
 /* Badges, liens et états des projets. */
 .pcb-badge {
   border: 1px solid oklch(0.68 0.118 72 / 45%);
@@ -1197,6 +1288,11 @@
   .board-zoom.is-powered .led-core,
   .board-zoom.is-powered .mascot-eye,
   .board-zoom.is-powered .binary-text,
+  .explode {
+    --x: 1;
+    transition: none;
+  }
+
   .bios-cursor,
   .trace-pulse,
   .reveal .pinout-pad,

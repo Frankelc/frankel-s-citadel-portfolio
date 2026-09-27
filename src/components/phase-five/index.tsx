@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FileText } from "lucide-react";
 
+import { SectionHeader } from "@/components/board/section-header";
 import { SectionTrace } from "@/components/board/section-trace";
 import { Scope } from "@/components/phase-five/scope";
 import { Filled } from "@/components/phase-three/project-meta";
@@ -44,21 +45,15 @@ export function PhaseFive() {
       <SectionTrace refDes="TP5" />
 
       <div className="mx-auto max-w-6xl">
-        <header className="mb-10 max-w-3xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-copper-light">
-            Section 5 · Journal de tests
-          </p>
-          <h2
-            id="journal-title"
-            className="mt-2 font-display text-[clamp(2rem,5vw,3.4rem)] font-semibold leading-none text-silk"
-          >
-            Hackathons et CTF, mesurés à l’analyseur
-          </h2>
-          <p className="mt-3 text-sm text-silk/70 sm:text-base">
-            Chaque événement est une impulsion sur le signal. Survolez ou sélectionnez une impulsion
-            pour lire la mesure.
-          </p>
-        </header>
+        <SectionHeader
+          eyebrow="Section 5 · Journal de tests"
+          title="Hackathons et CTF, mesurés à l’analyseur"
+          titleId="journal-title"
+          part="crystal"
+        >
+          Chaque événement est une impulsion sur le signal. Survolez ou sélectionnez une impulsion
+          pour lire la mesure.
+        </SectionHeader>
 
         <div ref={screenRef} className="reveal scope">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-silk/10 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-silk/55 sm:px-6">

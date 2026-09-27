@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { useCircuit } from "@/lib/circuit";
+import { SectionHeader } from "@/components/board/section-header";
 import { SectionTrace } from "@/components/board/section-trace";
 import { Bom } from "@/components/phase-three/bom";
 import { ModuleChip } from "@/components/phase-three/module-chip";
@@ -34,22 +35,16 @@ export function PhaseThree() {
       <SectionTrace refDes="TP3" />
 
       <div className="mx-auto max-w-6xl">
-        <header className="mb-16 max-w-3xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-copper-light">
-            Section 3 · Modules
-          </p>
-          <h2
-            id="modules-title"
-            className="mt-2 font-display text-[clamp(2rem,5vw,3.4rem)] font-semibold leading-none text-silk"
-          >
-            Les modules montés sur la carte
-          </h2>
-          <p className="mt-3 text-sm text-silk/70 sm:text-base">
-            Chaque puce est un projet. Cliquez dessus pour ouvrir sa datasheet, puis parcourez les
-            modules avec les flèches. Tous les autres projets sont listés dans la nomenclature, plus
-            bas.
-          </p>
-        </header>
+        <SectionHeader
+          eyebrow="Section 3 · Modules"
+          title="Les modules montés sur la carte"
+          titleId="modules-title"
+          part="qfp"
+        >
+          Chaque puce est un projet. Cliquez dessus pour ouvrir sa datasheet, puis parcourez les
+          modules avec les flèches. Tous les autres projets sont listés dans la nomenclature, plus
+          bas.
+        </SectionHeader>
 
         <div ref={boardRef} className="reveal module-board">
           <h3 className="sr-only">Modules principaux</h3>

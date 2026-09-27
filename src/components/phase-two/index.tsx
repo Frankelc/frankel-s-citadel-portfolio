@@ -1,5 +1,6 @@
 import { Github, Mail } from "lucide-react";
 
+import { SectionPart } from "@/components/board/section-part";
 import { SectionTrace } from "@/components/board/section-trace";
 import { Pinout } from "@/components/phase-two/pinout";
 import { datasheet, profile } from "@/data/profile";
@@ -18,17 +19,23 @@ export function PhaseTwo() {
           <span>Rév. 3.0 · 2026 · Page 1/1</span>
         </header>
 
-        <div className="px-5 pt-8 sm:px-8 sm:pt-10">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-copper-light">
-            Référence
-          </p>
-          <h2
-            id="fiche-title"
-            className="mt-2 break-words font-display text-[clamp(1.7rem,5.5vw,3.6rem)] font-semibold leading-none tracking-[0.02em] text-silk"
-          >
-            {datasheet.reference}
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm text-silk/75 sm:text-base">{profile.tagline}</p>
+        <div className="grid items-center gap-6 px-5 pt-8 sm:px-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_16rem]">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-copper-light">
+              Référence
+            </p>
+            <h2
+              id="fiche-title"
+              className="mt-2 break-words font-display text-[clamp(1.7rem,5.5vw,3.6rem)] font-semibold leading-none tracking-[0.02em] text-silk"
+            >
+              {datasheet.reference}
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm text-silk/75 sm:text-base">{profile.tagline}</p>
+          </div>
+          <SectionPart
+            kind="capacitor"
+            className="mx-auto w-full max-w-[11rem] sm:max-w-[15rem] lg:max-w-none"
+          />
         </div>
 
         <div className="grid gap-10 px-5 py-10 sm:px-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">

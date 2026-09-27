@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Check, Copy, Github, Mail } from "lucide-react";
 
 import { MascotFigure } from "@/components/board/mascot";
+import { SectionHeader } from "@/components/board/section-header";
 import { SectionTrace } from "@/components/board/section-trace";
 import { profile } from "@/data/profile";
 import { useReveal } from "@/hooks/use-reveal";
@@ -95,17 +96,12 @@ export function PhaseSix() {
       <SectionTrace refDes="TP6" />
 
       <div className="mx-auto max-w-6xl">
-        <header className="mb-10 max-w-3xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-copper-light">
-            Section 6 · Port de communication
-          </p>
-          <h2
-            id="contact-title"
-            className="mt-2 font-display text-[clamp(2rem,5vw,3.4rem)] font-semibold leading-none text-silk"
-          >
-            Établissons la connexion
-          </h2>
-        </header>
+        <SectionHeader
+          eyebrow="Section 6 · Port de communication"
+          title="Établissons la connexion"
+          titleId="contact-title"
+          part="usbc"
+        />
 
         <div
           ref={panelRef}

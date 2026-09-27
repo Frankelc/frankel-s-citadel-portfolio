@@ -2,6 +2,7 @@ import { ArrowUp, X } from "lucide-react";
 
 import { playInterfaceSound } from "@/lib/board-audio";
 import { useCircuit } from "@/lib/circuit";
+import { SectionHeader } from "@/components/board/section-header";
 import { SectionTrace } from "@/components/board/section-trace";
 import { projectById, projectRefs } from "@/data/projects";
 import { skillIndex, skillRef, skillZones, toLiveSkill, type Skill } from "@/data/skills";
@@ -134,21 +135,15 @@ export function PhaseFour() {
       <SectionTrace refDes="TP4" reverse={liveSkill !== null} />
 
       <div className="mx-auto max-w-6xl">
-        <header className="mb-10 max-w-3xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-copper-light">
-            Section 4 · Bibliothèque de composants
-          </p>
-          <h2
-            id="competences-title"
-            className="mt-2 font-display text-[clamp(2rem,5vw,3.4rem)] font-semibold leading-none text-silk"
-          >
-            Les compétences, zone par zone
-          </h2>
-          <p className="mt-3 text-sm text-silk/70 sm:text-base">
-            Chaque compétence est un composant. Mettez-en un sous tension : le courant remonte vers
-            les modules qui l’utilisent, et la nomenclature se filtre sur ces projets.
-          </p>
-        </header>
+        <SectionHeader
+          eyebrow="Section 4 · Bibliothèque de composants"
+          title="Les compétences, zone par zone"
+          titleId="competences-title"
+          part="relay"
+        >
+          Chaque compétence est un composant. Mettez-en un sous tension : le courant remonte vers
+          les modules qui l’utilisent, et la nomenclature se filtre sur ces projets.
+        </SectionHeader>
 
         <div ref={zonesRef} className="reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {skillZones.map((zone) => (
