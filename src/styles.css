@@ -847,6 +847,15 @@
     letter-spacing: 0.06em;
   }
 
+  /* Vue éclatée d'un projet : annotations lisibles, sous-titres repris sous le schéma. */
+  .explode-label {
+    font-size: 28px;
+  }
+
+  .explode-detail {
+    display: none;
+  }
+
   .log-row {
     grid-template-columns: 2rem minmax(0, 1fr);
   }

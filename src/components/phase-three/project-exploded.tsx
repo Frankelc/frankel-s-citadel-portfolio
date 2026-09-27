@@ -3,43 +3,50 @@ import type { CSSProperties, ReactNode } from "react";
 import { projectRefs, type Project } from "@/data/projects";
 import { partKind, PART_KIND_LABELS, type PartKind } from "@/lib/tech-kinds";
 
-const CX = 360;
-const CY = 225;
+const CX = 350;
+const CY = 232;
 const BOARD = 230;
 const PACKAGE = 190;
 // Projection isométrique d'un plan à plat (u, v) vers l'écran.
 const ISO = "matrix(0.866 0.5 -0.866 0.5 0 0)";
 
-/** Une couche : dessin à plat projeté en isométrie, décalé verticalement selon --x. */
+/**
+ * Une couche : dessin à plat projeté en isométrie, décalé verticalement selon --x.
+ * Les annotations alternent à gauche et à droite pour garder la puce au centre du cadre.
+ */
 function Layer({
   shift,
   size,
+  side,
   label,
   detail,
   children,
 }: {
   shift: number;
   size: number;
+  side: "left" | "right";
   label: string;
   detail: string;
   children: ReactNode;
 }) {
-  // Coin gauche du plan isométrique : (-h, +h) projeté donne x = -1,732 h.
-  const cornerX = CX - 1.732 * size;
+  // Coins gauche et droit du plan isométrique : (±h, ∓h) projeté donne x = ±1,732 h.
+  const dir = side === "left" ? -1 : 1;
+  const cornerX = CX + dir * 1.732 * size;
+  const anchor = side === "left" ? "end" : "start";
   return (
     <g className="explode-layer" style={{ "--shift": `${shift}px` } as CSSProperties}>
       <g transform={`translate(${CX} ${CY}) ${ISO}`}>{children}</g>
       <g className="explode-callout">
         <path
-          d={`M${cornerX - 6} ${CY} H${cornerX - 34}`}
+          d={`M${cornerX + dir * 6} ${CY} H${cornerX + dir * 30}`}
           stroke="var(--silk)"
           strokeOpacity="0.5"
         />
-        <circle cx={cornerX - 4} cy={CY} r="2.5" fill="var(--led)" />
-        <text x={cornerX - 40} y={CY - 3} textAnchor="end" className="explode-label">
+        <circle cx={cornerX + dir * 4} cy={CY} r="2.5" fill="var(--led)" />
+        <text x={cornerX + dir * 36} y={CY - 3} textAnchor={anchor} className="explode-label">
           {label}
         </text>
-        <text x={cornerX - 40} y={CY + 11} textAnchor="end" className="explode-detail">
+        <text x={cornerX + dir * 36} y={CY + 13} textAnchor={anchor} className="explode-detail">
           {detail}
         </text>
       </g>
@@ -193,15 +200,12 @@ export function ProjectExploded({ project, open }: { project: Project; open: boo
   const parts = project.stack.slice(0, 9).map((tech) => ({ tech, kind: partKind(tech) }));
   const positions = slots(parts.length);
   const ref = projectRefs[project.id] ?? "";
-  const links = [project.live ? "en ligne" : null, project.github ? "GitHub" : null].filter(
-    Boolean,
-  );
 
   return (
     <div className={`explode ${open ? "is-open" : ""}`}>
       <svg
-        viewBox="0 0 580 480"
-        className="block h-auto w-full"
+        viewBox="0 0 700 470"
+        className="mx-auto block h-auto max-h-[min(46vh,28rem)] w-full"
         role="img"
         aria-label={`Vue éclatée de ${project.title} : ${
           parts.length ? parts.map((part) => part.tech).join(", ") : "architecture non détaillée"
@@ -209,13 +213,12 @@ export function ProjectExploded({ project, open }: { project: Project; open: boo
       >
         {/* Carte : chaque techno est un composant relié au bus central */}
         <Layer
-          shift={120}
+          shift={106}
           size={BOARD / 2}
+          side="right"
           label="Carte"
           detail={
-            parts.length
-              ? `${parts.length} composant${parts.length > 1 ? "s" : ""}`
-              : "non peuplée (DNP)"
+            parts.length ? `${parts.length} composant${parts.length > 1 ? "s" : ""}` : "non peuplée"
           }
         >
           <rect
@@ -254,7 +257,7 @@ export function ProjectExploded({ project, open }: { project: Project; open: boo
         </Layer>
 
         {/* Fils de liaison : le contexte relie la puce au monde extérieur */}
-        <Layer shift={40} size={PACKAGE / 2} label="Fils de liaison" detail="contexte">
+        <Layer shift={34} size={PACKAGE / 2} side="left" label="Fils" detail="contexte">
           {Array.from({ length: 12 }, (_, i) => {
             const angle = (i / 12) * Math.PI * 2;
             const x1 = Math.cos(angle) * 40;
@@ -274,7 +277,7 @@ export function ProjectExploded({ project, open }: { project: Project; open: boo
         </Layer>
 
         {/* Puce de silicium : le cœur du projet */}
-        <Layer shift={-45} size={55} label="Puce" detail="objectif · ce que j’ai fait">
+        <Layer shift={-40} size={55} side="right" label="Puce" detail="objectif · réalisation">
           <rect
             x="-50"
             y="-50"
@@ -296,7 +299,13 @@ export function ProjectExploded({ project, open }: { project: Project; open: boo
         </Layer>
 
         {/* Capot : le marquage du composant */}
-        <Layer shift={-120} size={PACKAGE / 2} label="Capot" detail={`${ref} · marquage`}>
+        <Layer
+          shift={-110}
+          size={PACKAGE / 2}
+          side="left"
+          label="Capot"
+          detail={`${ref} · marquage`}
+        >
           <rect
             x={-PACKAGE / 2}
             y={-PACKAGE / 2}
@@ -315,10 +324,6 @@ export function ProjectExploded({ project, open }: { project: Project; open: boo
             {ref} · FGNL
           </text>
         </Layer>
-
-        <text x="570" y="474" textAnchor="end" className="explode-detail">
-          Broches : {links.length ? links.join(" · ") : "aucun lien public"}
-        </text>
       </svg>
 
       {parts.length ? (
