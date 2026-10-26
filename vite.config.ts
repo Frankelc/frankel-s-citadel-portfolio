@@ -11,5 +11,8 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // Build statique pour GitHub Pages (STATIC_EXPORT=true) : la page est générée en HTML
+    // à la compilation. Sans cette variable, le build Lovable reste inchangé.
+    prerender: { enabled: process.env.STATIC_EXPORT === "true", crawlLinks: false },
   },
 });
