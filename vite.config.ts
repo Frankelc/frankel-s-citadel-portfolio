@@ -13,6 +13,6 @@ export default defineConfig({
     server: { entry: "server" },
     // Build statique pour GitHub Pages (STATIC_EXPORT=true) : la page est générée en HTML
     // à la compilation. Sans cette variable, le build Lovable reste inchangé.
-    prerender: { enabled: process.env.STATIC_EXPORT === "true", crawlLinks: false },
+    prerender: { enabled: process.env["STATIC_EXPORT"] === "true", crawlLinks: false },
   },
 });
