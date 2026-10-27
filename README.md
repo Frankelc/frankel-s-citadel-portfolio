@@ -60,15 +60,6 @@ Au Rempart du Cœur. Un ordre sur parchemin avec sceau, texte « Un projet, un s
 
 Contrainte finale : tout ce spectacle ne doit jamais empêcher un recruteur de voir mes projets en moins de 10 secondes.
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/3dcb7ef1-b19a-4bc4-945a-90fd6bcdcf4d).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
